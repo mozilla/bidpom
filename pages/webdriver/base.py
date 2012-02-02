@@ -4,8 +4,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-from selenium.webdriver.support.ui import WebDriverWait
-
 
 class Base(object):
 
@@ -19,7 +17,3 @@ class Base(object):
                 selenium.switch_to_window(handle)
                 if selenium.title == self._page_title:
                     break
-
-    def wait_for_element_displayed(self, locator):
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*locator).is_displayed())
-        return self.selenium.find_element(*locator)

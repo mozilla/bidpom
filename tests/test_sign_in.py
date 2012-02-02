@@ -6,7 +6,7 @@
 
 import time
 
-from browser_id import BrowserID
+from .. import BrowserID
 
 from selenium import webdriver
 from selenium import selenium
@@ -15,17 +15,19 @@ class TestSignIn:
 
     _email = ''
     _password = ''
-    
+
     def test_sign_in_to_my_favorite_beer_using_webdriver(self):
         sel = webdriver.Firefox()
         sel.implicitly_wait(10)
         sel.get('http://myfavoritebeer.org/')
         sel.find_element_by_css_selector('#loginInfo .login').click()
+        sel.implicitly_wait(0)
     
         # BrowserID
         browser_id = BrowserID(sel)
         browser_id.sign_in(self._email, self._password)
 
+        sel.implicitly_wait(10)
         assert sel.find_element_by_id('logout').is_displayed
         sel.quit()
     
