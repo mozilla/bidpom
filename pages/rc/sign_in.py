@@ -15,43 +15,42 @@ class SignIn(Base):
     _select_email_locator = 'css=button.returning'
     _sign_in_locator = 'id=signInButton'
 
+    def __init__(self, *args, **kwargs):
+        Base.__init__(self, *args, **kwargs)
+        self.wait_for_element_visible(self._email_locator)
+
     @property
     def email(self):
         """Get the value of the email field."""
-        self.wait_for_element_visible(self._email_locator)
         return self.selenium.get_text(self._email_locator)
 
     @email.setter
     def email(self, value):
         """Set the value of the email field."""
-        self.wait_for_element_visible(self._email_locator)
         self.selenium.type(self._email_locator, value)
 
     @property
     def password(self):
         """Get the value of the password field."""
-        self.wait_for_element_visible(self._password_locator)
         return self.selenium.get_text(self._password_locator)
 
     @password.setter
     def password(self, value):
         """Set the value of the password field."""
-        self.wait_for_element_visible(self._password_locator)
         self.selenium.type(self._password_locator, value)
 
     def click_next(self):
         """Clicks the 'next' button."""
-        self.wait_for_element_visible(self._next_locator)
         self.selenium.click(self._next_locator)
+        self.wait_for_element_visible(self._select_email_locator)
 
     def click_select_email(self):
         """Clicks the 'select email' button."""
-        self.wait_for_element_visible(self._select_email_locator)
         self.selenium.click(self._select_email_locator)
+        self.wait_for_element_visible(self._sign_in_locator)
 
     def click_sign_in(self):
         """Clicks the 'Sign In' button."""
-        self.wait_for_element_visible(self._sign_in_locator)
         self.selenium.click(self._sign_in_locator)
         self.selenium.deselect_pop_up()
 
