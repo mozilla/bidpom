@@ -20,7 +20,8 @@ class SignIn(Base):
 
     def __init__(self, *args, **kwargs):
         Base.__init__(self, *args, **kwargs)
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*self._email_locator).is_displayed())
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.find_element(*self._email_locator).is_displayed())
 
     @property
     def email(self):
@@ -49,12 +50,14 @@ class SignIn(Base):
     def click_next(self):
         """Clicks the 'next' button."""
         self.selenium.find_element(*self._next_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*self._password_locator).is_displayed())
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.find_element(*self._password_locator).is_displayed())
 
     def click_select_email(self):
         """Clicks the 'select email' button."""
         self.selenium.find_element(*self._select_email_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(lambda s: s.find_element(*self._sign_in_locator).is_displayed())
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.find_element(*self._sign_in_locator).is_displayed())
 
     def click_sign_in(self):
         """Clicks the 'Sign In' button."""
