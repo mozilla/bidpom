@@ -13,7 +13,7 @@ class Base(object):
 
     _page_title = 'Browser ID'
 
-    def __init__(self, selenium, timeout=60):
+    def __init__(self, selenium, timeout=60000):
         self.selenium = selenium
         self.timeout = timeout
         if selenium.get_title != self._page_title:
@@ -25,7 +25,7 @@ class Base(object):
         while not self._page_title in self.selenium.get_all_window_titles():
             time.sleep(1)
             count += 1
-            if count == self.timeout:
+            if count == self.timeout / 1000:
                 raise Exception('Popup has not loaded')
 
     def wait_for_element_present(self, element):
@@ -33,7 +33,7 @@ class Base(object):
         while not self.selenium.is_element_present(element):
             time.sleep(1)
             count += 1
-            if count == self.timeout:
+            if count == self.timeout / 1000:
                 raise Exception(element + ' has not loaded')
 
     def wait_for_element_visible(self, element):
@@ -42,5 +42,5 @@ class Base(object):
         while not self.selenium.is_visible(element):
             time.sleep(1)
             count += 1
-            if count == self.timeout:
+            if count == self.timeout / 1000:
                 raise Exception(element + ' is not visible')
