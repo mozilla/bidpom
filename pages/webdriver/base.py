@@ -7,7 +7,7 @@
 
 class Base(object):
 
-    _page_title = 'Browser ID'
+    _page_title = 'BrowserID'
 
     def __init__(self, selenium, timeout=60):
         self.selenium = selenium

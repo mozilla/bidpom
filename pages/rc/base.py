@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 
 class Base(object):
 
-    _page_title = 'Browser ID'
+    _page_title = 'BrowserID'
 
     def __init__(self, selenium, timeout=60000):
         self.selenium = selenium
