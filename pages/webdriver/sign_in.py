@@ -15,8 +15,7 @@ class SignIn(Base):
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
     _next_locator = (By.CSS_SELECTOR, 'button.start')
-    _select_email_locator = (By.CSS_SELECTOR, 'button.returning')
-    _sign_in_locator = (By.ID, 'signInButton')
+    _sign_in_locator = (By.CSS_SELECTOR, 'button.returning')
 
     def __init__(self, *args, **kwargs):
         Base.__init__(self, *args, **kwargs)
@@ -53,12 +52,6 @@ class SignIn(Base):
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: s.find_element(*self._password_locator).is_displayed())
 
-    def click_select_email(self):
-        """Clicks the 'select email' button."""
-        self.selenium.find_element(*self._select_email_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(*self._sign_in_locator).is_displayed())
-
     def click_sign_in(self):
         """Clicks the 'Sign In' button."""
         self.selenium.find_element(*self._sign_in_locator).click()
@@ -69,5 +62,4 @@ class SignIn(Base):
         self.email = email
         self.click_next()
         self.password = password
-        self.click_select_email()
         self.click_sign_in()

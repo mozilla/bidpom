@@ -28,8 +28,8 @@ class TestSignIn:
         browser_id = BrowserID(sel)
         browser_id.sign_in(self._email, self._password)
 
-        sel.implicitly_wait(10)
-        assert sel.find_element_by_id('logout').is_displayed
+        sel.implicitly_wait(20)
+        assert sel.find_element_by_id('logout').is_displayed()
         sel.quit()
 
     def test_sign_in_to_my_favorite_beer_using_rc(self):
@@ -39,6 +39,7 @@ class TestSignIn:
                        'http://myfavoritebeer.org')
         sel.start()
         sel.open('/')
+        time.sleep(5)
         sel.click('css=#loginInfo .login')
 
         # BrowserID

@@ -12,8 +12,7 @@ class SignIn(Base):
     _email_locator = 'id=email'
     _password_locator = 'id=password'
     _next_locator = 'css=button.start'
-    _select_email_locator = 'css=button.returning'
-    _sign_in_locator = 'id=signInButton'
+    _sign_in_locator = 'css=button.returning'
 
     def __init__(self, *args, **kwargs):
         Base.__init__(self, *args, **kwargs)
@@ -42,12 +41,7 @@ class SignIn(Base):
     def click_next(self):
         """Clicks the 'next' button."""
         self.selenium.click(self._next_locator)
-        self.wait_for_element_visible(self._select_email_locator)
-
-    def click_select_email(self):
-        """Clicks the 'select email' button."""
-        self.selenium.click(self._select_email_locator)
-        self.wait_for_element_visible(self._sign_in_locator)
+        self.wait_for_element_visible(self._password_locator)
 
     def click_sign_in(self):
         """Clicks the 'Sign In' button."""
@@ -59,5 +53,4 @@ class SignIn(Base):
         self.email = email
         self.click_next()
         self.password = password
-        self.click_select_email()
         self.click_sign_in()
