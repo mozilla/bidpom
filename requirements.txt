@@ -1,0 +1,1 @@
+pytest-mozwebqa==0.10
