@@ -12,8 +12,13 @@ class Base(object):
     def __init__(self, selenium, timeout=60):
         self.selenium = selenium
         self.timeout = timeout
+        self._main_window_handle = self.selenium.current_window_handle
+
         if selenium.title != self._page_title:
             for handle in selenium.window_handles:
                 selenium.switch_to_window(handle)
                 if selenium.title == self._page_title:
                     break
+
+    def switch_to_main_window(self):
+        self.selenium.switch_to_window(self._main_window_handle)
