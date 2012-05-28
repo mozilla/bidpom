@@ -20,8 +20,13 @@ def pytest_funcarg__mozwebqa(request):
     mozwebqa.selenium.click(login_locator)
     return mozwebqa
 
+
 def wait_for_element_visible(mozwebqa, locator):
-    count = 0
-    while count < mozwebqa.timeout and not (mozwebqa.selenium.is_visible(locator)):
-        time.sleep(1)
-        count += 1
+    end_time = time.time() + mozwebqa.timeout
+    while(True):
+        if mozwebqa.selenium.is_visible(locator):
+            return True
+        time.sleep(0.5)
+        if(time.time() > end_time):
+            break
+    raise Exception('Timeout waiting for element to be visible: %s' % locator)

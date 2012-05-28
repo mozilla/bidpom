@@ -14,13 +14,13 @@ class Base(object):
     def __init__(self, selenium, timeout=60000):
         self.selenium = selenium
         self.timeout = timeout
-        if selenium.get_title != self._page_title:
-            self.wait_for_popup()
-            selenium.select_pop_up(self._page_title)
 
-    def wait_for_popup(self):
+    def switch_to_main_window(self):
+        self.selenium.select_window('null')
+
+    def wait_for_popup(self, page_title):
         count = 0
-        while not self._page_title in self.selenium.get_all_window_titles():
+        while not page_title in self.selenium.get_all_window_titles():
             time.sleep(1)
             count += 1
             if count == self.timeout / 1000:
