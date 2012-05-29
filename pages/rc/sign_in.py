@@ -9,6 +9,7 @@ from base import Base
 
 class SignIn(Base):
 
+    _signed_in_email_locator = 'css=label[for=email_0]'
     _email_locator = 'id=email'
     _password_locator = 'id=password'
     _next_locator = 'css=button.start'
@@ -33,6 +34,11 @@ class SignIn(Base):
 
     def close_window(self):
         self.selenium.close()
+
+    @property
+    def signed_in_email(self):
+        """Get the value of the email that is currently signed in."""
+        return self.selenium.get_text(self._signed_in_email_locator)
 
     @property
     def email(self):

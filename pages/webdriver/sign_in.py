@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class SignIn(Base):
 
+    _signed_in_email_locator = (By.CSS_SELECTOR, 'label[for=email_0]')
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
     _next_locator = (By.CSS_SELECTOR, 'button.start')
@@ -41,6 +42,11 @@ class SignIn(Base):
 
     def close_window(self):
         self.selenium.close()
+
+    @property
+    def signed_in_email(self):
+        """Get the value of the email that is currently signed in."""
+        return self.selenium.find_element(*self._signed_in_email_locator).text
 
     @property
     def email(self):

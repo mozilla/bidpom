@@ -71,7 +71,8 @@ class TestSignIn:
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
     def test_sign_in_returning_user(self, mozwebqa):
-        self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
+        (email, password) = self.create_verified_user(mozwebqa.selenium,
+                                                      mozwebqa.timeout)
         mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedout').is_displayed())
@@ -82,18 +83,22 @@ class TestSignIn:
         signin = SignIn(mozwebqa.selenium,
                         mozwebqa.timeout,
                         expect='returning')
+        assert signin.signed_in_email == email
         signin.click_sign_in_returning_user()
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
     def create_verified_user(self, selenium, timeout):
         restmail_username = 'bidpom_%s' % uuid.uuid1()
+        email = '%s@restmail.net' % restmail_username
+        password = 'password'
         browser_id = BrowserID(selenium, timeout)
-        browser_id.sign_in('%s@restmail.net' % restmail_username)
+        browser_id.sign_in(email)
         mail = restmail.get_mail(restmail_username)
         verify_url = re.search(BrowserID.VERIFY_URL_REGEX,
                                mail[0]['text']).group(0)
         selenium.get(verify_url)
         from ...pages.webdriver.verify_email_address import VerifyEmailAddress
         verify_email_address = VerifyEmailAddress(selenium, timeout)
-        verify_email_address.verify_email_address('password')
+        verify_email_address.verify_email_address(password)
+        return (email, password)
