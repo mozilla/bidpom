@@ -12,10 +12,11 @@ class SignIn(Base):
     _signed_in_email_locator = 'css=label[for=email_0]'
     _email_locator = 'id=email'
     _password_locator = 'id=password'
+    _verify_password_locator = 'id=vpassword'
     _next_locator = 'css=button.start'
     _sign_in_locator = 'css=button.returning'
     _sign_in_returning_user_locator = 'id=signInButton'
-    _verify_email_locator = 'css=button.newuser'
+    _verify_email_locator = 'id=verify_user'
     _use_another_email_address_locator = 'id=back'
 
     def __init__(self, selenium, timeout, expect='new'):
@@ -60,6 +61,16 @@ class SignIn(Base):
         """Set the value of the password field."""
         self.selenium.type(self._password_locator, value)
 
+    @property
+    def verify_password(self):
+        """Get the value of the verify password field."""
+        return self.selenium.get_text(self._verify_password_locator)
+
+    @password.setter
+    def verify_password(self, value):
+        """Set the value of the verify password field."""
+        self.selenium.type(self._verify_password_locator, value)
+
     def click_next(self, expect='password'):
         """Clicks the 'next' button."""
         self.selenium.click(self._next_locator)
@@ -92,10 +103,12 @@ class SignIn(Base):
         self.password = password
         self.click_sign_in()
 
-    def sign_in_new_user(self, email):
+    def sign_in_new_user(self, email, password):
         """Requests verification email using the specified email address."""
         self.email = email
         self.click_next(expect='verify')
+        self.password = password
+        self.verify_password = password
         self.click_verify_email()
         self.close_window()
         self.switch_to_main_window()

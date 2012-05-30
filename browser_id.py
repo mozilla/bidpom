@@ -17,20 +17,11 @@ class BrowserID(object):
                                                 selenium.selenium))
         self.timeout = timeout
 
-    def sign_in(self, email=None, password=None):
+    def sign_in(self, email, password):
         """Signs in using the specified email address and password."""
         if self.selenium.rc:
             from pages.rc.sign_in import SignIn
         else:
             from pages.webdriver.sign_in import SignIn
-        if email and password:
-            sign_in = SignIn(self.selenium, timeout=self.timeout, expect='new')
-            sign_in.sign_in(email, password)
-        elif email:
-            sign_in = SignIn(self.selenium, timeout=self.timeout, expect='new')
-            sign_in.sign_in_new_user(email)
-        else:
-            sign_in = SignIn(self.selenium,
-                             timeout=self.timeout,
-                             expect='returning')
-            sign_in.sign_in_returning_user()
+        sign_in = SignIn(self.selenium, timeout=self.timeout, expect='new')
+        sign_in.sign_in(email, password)
