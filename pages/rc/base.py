@@ -9,7 +9,7 @@ import time
 
 class Base(object):
 
-    _page_title = 'BrowserID'
+    _page_title = 'Mozilla Persona'
 
     def __init__(self, selenium, timeout=60000):
         self.selenium = selenium
