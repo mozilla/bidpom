@@ -30,6 +30,8 @@ class SignIn(Base):
                 self.selenium.switch_to_window(handle)
                 if self.selenium.title == self._page_title:
                     break
+            else:
+                raise Exception('Popup has not loaded')
 
         if expect == 'new':
             WebDriverWait(self.selenium, self.timeout).until(
