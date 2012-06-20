@@ -1,0 +1,22 @@
+before_script:
+  - curl -k -L -o /tmp/selenium.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.24.1.jar
+  - java -jar /tmp/selenium.jar > selenium.out &
+  - sh -e /etc/init.d/xvfb start
+  - sleep 10
+
+language: python
+python:
+  - 2.6
+  - 2.7
+
+script: py.test --baseurl=http://dev.123done.org --browser=*firefox --driver=firefox -m travis tests/
+
+env:
+  - DISPLAY=':99.0'
+
+notifications:
+  email:
+    - dave.hunt@gmail.com
+  irc:
+    - "irc.mozilla.org#automation"
+    - "irc.mozilla.org#identity"

@@ -37,6 +37,7 @@ class TestSignIn:
         mozwebqa.wait_for_element_visible(mozwebqa, logout_locator)
         assert mozwebqa.selenium.is_visible(logout_locator)
 
+    @pytest.mark.travis
     def test_sign_in_new_user_helper(self, mozwebqa):
         restmail_username = 'bidpom_%s' % uuid.uuid1()
         email = '%s@restmail.net' % restmail_username
@@ -48,6 +49,7 @@ class TestSignIn:
         mail = restmail.get_mail(restmail_username)
         assert 'Thanks for verifying' in mail[0]['text']
 
+    @pytest.mark.travis
     def test_sign_in_new_user(self, mozwebqa):
         restmail_username = 'bidpom_%s' % uuid.uuid1()
         email = '%s@restmail.net' % restmail_username
@@ -66,6 +68,7 @@ class TestSignIn:
         mail = restmail.get_mail(restmail_username)
         assert 'Thanks for verifying' in mail[0]['text']
 
+    @pytest.mark.travis
     def test_sign_in_returning_user(self, mozwebqa):
         self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.open('%s/' % mozwebqa.base_url)
