@@ -64,35 +64,9 @@ class TestSignIn:
         mail = restmail.get_mail(restmail_username)
         assert 'Thanks for verifying' in mail[0]['text']
 
-    def test_sign_in_returning_user_helper(self, mozwebqa):
+    def test_sign_in_returning_user(self, mozwebqa):
         self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
-        WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedout').is_displayed())
-        mozwebqa.selenium.find_element_by_id('loggedout'). \
-            find_element_by_tag_name('button').click()
-
-        from ...pages.webdriver.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
-        signin.sign_in_returning_user()
-        WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
-
-    def test_sign_in_returning_user(self, mozwebqa):
-        (email, password) = self.create_verified_user(mozwebqa.selenium,
-                                                      mozwebqa.timeout)
-        mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
-        WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedout').is_displayed())
-        mozwebqa.selenium.find_element_by_id('loggedout'). \
-            find_element_by_tag_name('button').click()
-
-        from ...pages.webdriver.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium,
-                        mozwebqa.timeout,
-                        expect='returning')
-        assert signin.signed_in_email == email
-        signin.click_sign_in_returning_user()
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
