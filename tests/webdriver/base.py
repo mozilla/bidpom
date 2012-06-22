@@ -7,11 +7,21 @@
 import re
 import uuid
 
+import requests
+
 from ... import BrowserID
 from .. import restmail
 
 
 class BaseTest(object):
+
+    def browserid_url(self, base_url):
+        response = requests.get('%s/' % base_url, verify=False)
+        match = re.search(BrowserID.INCLUDE_URL_REGEX, response.content)
+        if match:
+            return match.group(1)
+        else:
+            raise Exception('Unable to determine BrowserID URL from %s.' % base_url)
 
     def create_verified_user(self, selenium, timeout):
         restmail_username = 'bidpom_%s' % uuid.uuid1()
@@ -23,12 +33,12 @@ class BaseTest(object):
         signin.sign_in_new_user(email, password)
         mail = restmail.get_mail(restmail_username)
         verify_url = re.search(BrowserID.VERIFY_URL_REGEX,
-            mail[0]['text']).group(0)
+                               mail[0]['text']).group(0)
 
         selenium.get(verify_url)
         from ...pages.webdriver.complete_registration import CompleteRegistration
         complete_registration = CompleteRegistration(selenium,
-            timeout,
-            expect='success')
+                                                     timeout,
+                                                     expect='success')
         assert 'Thank you' in complete_registration.thank_you
         return (email, password)

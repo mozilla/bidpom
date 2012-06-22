@@ -19,7 +19,7 @@ class TestSignIn(BaseTest):
         (email, password) = self.create_verified_user(mozwebqa.selenium,
                                                       mozwebqa.timeout)
 
-        mozwebqa.selenium.get('https://login.dev.anosrep.org')
+        mozwebqa.selenium.get(self.browserid_url(mozwebqa.base_url))
         from ...pages.webdriver.account_manager import AccountManager
         account_manager = AccountManager(mozwebqa.selenium, mozwebqa.timeout)
 

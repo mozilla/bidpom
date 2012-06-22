@@ -62,7 +62,7 @@ class AccountManager(Base):
 
     def click_password_done(self):
         """Click password done to save the new password."""
-        self.selenium.find_element(*self._change_password_done_locator).click()        
+        self.selenium.find_element(*self._change_password_done_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: s.find_element(*self._edit_password_button_locator).is_displayed())
 

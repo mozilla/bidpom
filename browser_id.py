@@ -10,6 +10,7 @@ import selenium
 class BrowserID(object):
 
     VERIFY_URL_REGEX = 'https?:\/\/(\S+)\/verify_email_address\?token=(\S+)'
+    INCLUDE_URL_REGEX = '(https?:\/\/(\S+))\/include\.js'
 
     def __init__(self, sel, timeout=60):
         self.selenium = sel
