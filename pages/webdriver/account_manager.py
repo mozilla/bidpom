@@ -27,6 +27,10 @@ class AccountManager(Base):
             lambda s: s.find_element(*self._emails_locator).is_displayed())
 
     @property
+    def signed_in(self):
+        return 'not_authenticated' not in self.selenium.find_element(By.TAG_NAME, 'body').get_attribute('class')
+
+    @property
     def emails(self):
         return [element.text for element in self.selenium.find_elements(*self._emails_locator)]
 
@@ -69,4 +73,4 @@ class AccountManager(Base):
     def click_sign_out(self):
         self.selenium.find_element(*self._sign_out_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(*self._sign_in_locator).is_displayed())
+            lambda s: not self.signed_in)

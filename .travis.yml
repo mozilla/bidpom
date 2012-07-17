@@ -2,7 +2,7 @@ before_script:
   - curl -k -L -o /tmp/selenium.jar http://selenium.googlecode.com/files/selenium-server-standalone-2.24.1.jar
   - java -jar /tmp/selenium.jar > selenium.out &
   - sh -e /etc/init.d/xvfb start
-  - sleep 10
+  - sleep 30
 
 language: python
 python:
