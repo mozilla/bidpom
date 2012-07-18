@@ -10,7 +10,7 @@ import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 
 from ... import BrowserID
-from ...mocks.user import MockUser
+from ... mocks.user import MockUser
 from .. import restmail
 from base import BaseTest
 
