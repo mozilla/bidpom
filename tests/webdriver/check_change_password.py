@@ -16,19 +16,19 @@ class TestSignIn(BaseTest):
 
     @pytest.mark.travis
     def test_change_password(self, mozwebqa):
-        (email, password) = self.create_verified_user(mozwebqa.selenium,
-                                                      mozwebqa.timeout)
+        user = self.create_verified_user(mozwebqa.selenium,
+                                         mozwebqa.timeout)
 
         mozwebqa.selenium.get(self.browserid_url(mozwebqa.base_url))
         from ...pages.webdriver.account_manager import AccountManager
         account_manager = AccountManager(mozwebqa.selenium, mozwebqa.timeout)
 
-        assert email in account_manager.emails
+        assert user.primary_email in account_manager.emails
 
         account_manager.click_edit_password()
-        account_manager.old_password = password
-        new_password = password + '_new'
-        account_manager.new_password = new_password
+        account_manager.old_password = user.password
+        user.password += '_new'
+        account_manager.new_password = user.password
         account_manager.click_password_done()
         account_manager.click_sign_out()
 
@@ -40,7 +40,7 @@ class TestSignIn(BaseTest):
         mozwebqa.selenium.find_element_by_css_selector(login_locator).click()
 
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
-        browser_id.sign_in(email, new_password)
+        browser_id.sign_in(user.primary_email, user.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())

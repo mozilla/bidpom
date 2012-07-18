@@ -13,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 class SignIn(Base):
 
     _signed_in_email_locator = (By.CSS_SELECTOR, 'label[for=email_0]')
+    _this_is_not_me_locator = (By.ID, 'thisIsNotMe')
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
     _verify_password_locator = (By.ID, 'vpassword')
@@ -54,6 +55,12 @@ class SignIn(Base):
         """Get the value of the email that is currently signed in."""
         return self.selenium.find_element(*self._signed_in_email_locator).text
 
+    def click_this_is_not_me(self):
+        """Clicks the 'This is not me' button."""
+        self.selenium.find_element(*self._this_is_not_me_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: s.find_element(*self._email_locator).is_displayed())
+
     @property
     def email(self):
         """Get the value of the email field."""
@@ -83,7 +90,7 @@ class SignIn(Base):
         """Get the value of the verify password field."""
         return self.selenium.find_element(*self._verify_password_locator).text
 
-    @password.setter
+    @verify_password.setter
     def verify_password(self, value):
         """Set the value of the verify password field."""
         password = self.selenium.find_element(*self._verify_password_locator)
@@ -139,7 +146,7 @@ class SignIn(Base):
         self.selenium.find_element(*self._reset_password_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
             lambda s: s.find_element(
-                *self._use_another_email_address_locator).is_displayed())
+                *self._check_email_at_locator).is_displayed())
 
     def sign_in(self, email, password):
         """Signs in using the specified email address and password."""

@@ -10,16 +10,21 @@ import time
 import requests
 
 
-def get_mail(username, timeout=60):
+def get_mail(username, message_count=1, timeout=60):
     end_time = time.time() + timeout
     while(True):
         response = requests.get(
             'https://restmail.net/mail/%s' % username,
             verify=False)
         restmail = json.loads(response.content)
-        if len(restmail) > 0:
+        if len(restmail) == message_count:
             return restmail
         time.sleep(0.5)
         if(time.time() > end_time):
             break
-    raise Exception('Timeout getting restmail for %s' % username)
+    raise Exception('Timeout getting restmail for %(USERNAME)s. '
+                    'Expected %(EXPECTED_MESSAGE_COUNT)s messages '
+                    'but there were %(ACTUAL_MESSAGE_COUNT)s.' % {
+                        'USERNAME': username,
+                        'EXPECTED_MESSAGE_COUNT': message_count,
+                        'ACTUAL_MESSAGE_COUNT': len(restmail)})

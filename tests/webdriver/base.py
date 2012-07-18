@@ -5,11 +5,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-import uuid
 
 import requests
+from selenium.webdriver.support.ui import WebDriverWait
 
 from ... import BrowserID
+from ...mocks.user import MockUser
 from .. import restmail
 
 
@@ -23,15 +24,19 @@ class BaseTest(object):
         else:
             raise Exception('Unable to determine BrowserID URL from %s.' % base_url)
 
-    def create_verified_user(self, selenium, timeout):
-        restmail_username = 'bidpom_%s' % uuid.uuid1()
-        email = '%s@restmail.net' % restmail_username
-        password = 'password'
+    def log_out(self, selenium, timeout):
+        WebDriverWait(selenium, timeout).until(
+            lambda s: s.find_element_by_id('loggedin').is_displayed())
+        selenium.find_element_by_css_selector('#loggedin a').click()
+        WebDriverWait(selenium, timeout).until(
+            lambda s: s.find_element_by_css_selector('#loggedout button').is_displayed())
 
+    def create_verified_user(self, selenium, timeout):
+        user = MockUser()
         from ...pages.webdriver.sign_in import SignIn
         signin = SignIn(selenium, timeout, expect='new')
-        signin.sign_in_new_user(email, password)
-        mail = restmail.get_mail(restmail_username)
+        signin.sign_in_new_user(user.primary_email, user.password)
+        mail = restmail.get_mail(user.id)
         verify_url = re.search(BrowserID.VERIFY_URL_REGEX,
                                mail[0]['text']).group(0)
 
@@ -41,4 +46,4 @@ class BaseTest(object):
                                                      timeout,
                                                      expect='success')
         assert 'Thank you' in complete_registration.thank_you
-        return (email, password)
+        return user
