@@ -1,2 +1,2 @@
-pytest-mozwebqa==0.10
-requests==0.12.1
+pytest-mozwebqa==1.0
+requests==0.13.3
