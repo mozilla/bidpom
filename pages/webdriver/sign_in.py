@@ -11,6 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 import time
 
+
 class SignIn(Base):
 
     _this_is_not_me_locator = (By.ID, 'thisIsNotMe')
@@ -105,9 +106,6 @@ class SignIn(Base):
         """ Select email from the returning user's multiple emails """
         checkbox = self.selenium.find_element(By.CSS_SELECTOR, "input[value='%s']" % value)
         checkbox.click()
-
-    def check_email_at_address(self):
-        return self.selenium.find_element(*self._check_email_at_locator).text
 
     @property
     def password(self):
