@@ -37,7 +37,9 @@ class TestSignIn(BaseTest):
 
         signin.close_window()
         signin.switch_to_main_window()
-        mail = restmail.get_mail(user.id, message_count=2)
+        mail = restmail.get_mail(user.primary_email,
+                                 message_count=2,
+                                 timeout=mozwebqa.timeout)
         assert 'Click to reset your password' in mail[1]['text']
 
         reset_url = re.search(BrowserID.RESET_URL_REGEX,

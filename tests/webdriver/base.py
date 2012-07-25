@@ -36,7 +36,7 @@ class BaseTest(object):
         from ...pages.webdriver.sign_in import SignIn
         signin = SignIn(selenium, timeout, expect='new')
         signin.sign_in_new_user(user.primary_email, user.password)
-        mail = restmail.get_mail(user.id)
+        mail = restmail.get_mail(user.primary_email, timeout=timeout)
         verify_url = re.search(BrowserID.VERIFY_URL_REGEX,
                                mail[0]['text']).group(0)
 

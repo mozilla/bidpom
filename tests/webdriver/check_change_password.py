@@ -16,8 +16,7 @@ class TestSignIn(BaseTest):
 
     @pytest.mark.travis
     def test_change_password(self, mozwebqa):
-        user = self.create_verified_user(mozwebqa.selenium,
-                                         mozwebqa.timeout)
+        user = self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
 
         mozwebqa.selenium.get(self.browserid_url(mozwebqa.base_url))
         from ...pages.webdriver.account_manager import AccountManager
