@@ -8,9 +8,9 @@ import re
 
 import pytest
 
-from ... import BrowserID
-from .. import restmail
+from .. import BrowserID
 from base import BaseTest
+import restmail
 
 
 @pytest.mark.nondestructive
@@ -25,7 +25,7 @@ class TestSignIn(BaseTest):
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
 
-        from ...pages.webdriver.sign_in import SignIn
+        from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
         signin.click_add_another_email_address()
         signin.new_email = user.additional_emails[0]
@@ -40,7 +40,7 @@ class TestSignIn(BaseTest):
             mail[0]['text']).group(0)
 
         mozwebqa.selenium.get(confirm_url)
-        from ...pages.webdriver.complete_registration import CompleteRegistration
+        from .. pages.complete_registration import CompleteRegistration
         complete_registration = CompleteRegistration(mozwebqa.selenium,
             mozwebqa.timeout,
             expect='success')

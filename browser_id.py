@@ -14,17 +14,12 @@ class BrowserID(object):
     RESET_URL_REGEX = 'https?:\/\/(\S+)\/reset_password\?token=(.{48})'
     INCLUDE_URL_REGEX = '(https?:\/\/(\S+))\/include\.js'
 
-    def __init__(self, sel, timeout=60):
-        self.selenium = sel
-        setattr(self.selenium, 'rc', isinstance(self.selenium,
-                                                selenium.selenium))
+    def __init__(self, selenium, timeout=60):
+        self.selenium = selenium
         self.timeout = timeout
 
     def sign_in(self, email, password):
         """Signs in using the specified email address and password."""
-        if self.selenium.rc:
-            from pages.rc.sign_in import SignIn
-        else:
-            from pages.webdriver.sign_in import SignIn
+        from pages.sign_in import SignIn
         sign_in = SignIn(self.selenium, timeout=self.timeout, expect='new')
         sign_in.sign_in(email, password)

@@ -7,7 +7,7 @@
 import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 
-from ... import BrowserID
+from .. import BrowserID
 from base import BaseTest
 
 
@@ -19,7 +19,7 @@ class TestSignIn(BaseTest):
         user = self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
 
         mozwebqa.selenium.get(self.browserid_url(mozwebqa.base_url))
-        from ...pages.webdriver.account_manager import AccountManager
+        from .. pages.account_manager import AccountManager
         account_manager = AccountManager(mozwebqa.selenium, mozwebqa.timeout)
 
         assert user.primary_email in account_manager.emails

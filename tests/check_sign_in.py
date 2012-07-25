@@ -4,15 +4,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import uuid
-
 import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 
-from ... import BrowserID
-from ... mocks.user import MockUser
-from .. import restmail
+from .. import BrowserID
+from .. mocks.user import MockUser
 from base import BaseTest
+import restmail
 
 
 @pytest.mark.nondestructive
@@ -26,7 +24,7 @@ class TestSignIn(BaseTest):
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
     def test_sign_in(self, mozwebqa):
-        from ...pages.webdriver.sign_in import SignIn
+        from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
         signin.email = mozwebqa.email
         signin.click_next(expect='password')
@@ -39,7 +37,7 @@ class TestSignIn(BaseTest):
     @pytest.mark.travis
     def test_sign_in_new_user_helper(self, mozwebqa):
         user = MockUser()
-        from ...pages.webdriver.sign_in import SignIn
+        from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
         print 'signing in as %s' % user.primary_email
         signin.sign_in_new_user(user.primary_email, 'password')
@@ -49,7 +47,7 @@ class TestSignIn(BaseTest):
     @pytest.mark.travis
     def test_sign_in_new_user(self, mozwebqa):
         user = MockUser()
-        from ...pages.webdriver.sign_in import SignIn
+        from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
         print 'signing in as %s' % user.primary_email
         signin.email = user.primary_email
