@@ -9,8 +9,9 @@ import selenium
 
 class BrowserID(object):
 
-    VERIFY_URL_REGEX = 'https?:\/\/(\S+)\/verify_email_address\?token=(\S+)'
-    RESET_URL_REGEX = 'https?:\/\/(\S+)\/reset_password\?token=(\S+)'
+    VERIFY_URL_REGEX = 'https?:\/\/(\S+)\/verify_email_address\?token=(.{48})'
+    CONFIRM_URL_REGEX = 'https?:\/\/(\S+)\/confirm\?token=(.{48})'
+    RESET_URL_REGEX = 'https?:\/\/(\S+)\/reset_password\?token=(.{48})'
     INCLUDE_URL_REGEX = '(https?:\/\/(\S+))\/include\.js'
 
     def __init__(self, sel, timeout=60):
