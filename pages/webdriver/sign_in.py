@@ -9,14 +9,12 @@ from base import Base
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-import time
-
 
 class SignIn(Base):
 
     _this_is_not_me_locator = (By.ID, 'thisIsNotMe')
-    _signed_in_email_locator = (By.XPATH, "//label[input[@checked='checked']]")
-    _listed_emails_locator = (By.XPATH, "//label[input[@name='email']]")
+    _signed_in_email_locator = (By.CSS_SELECTOR, 'label[for=email_0]')
+    _emails_locator = (By.CSS_SELECTOR, 'label[for^=email_]')
     _email_locator = (By.ID, 'email')
     _password_locator = (By.ID, 'password')
     _verify_password_locator = (By.ID, 'vpassword')
@@ -50,7 +48,8 @@ class SignIn(Base):
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.find_element(
                     *self._sign_in_returning_user_locator).is_displayed())
-            time.sleep(2)
+            import time
+            time.sleep(2) # TODO: Remove this sleep
         else:
             raise Exception('Unknown expect value: %s' % expect)
 
@@ -70,8 +69,9 @@ class SignIn(Base):
 
     @property
     def emails(self):
-        """ Lists the emails for the returning user """
-        return [element.text for element in self.selenium.find_elements(*self._listed_emails_locator)]
+        """Get the emails for the returning user."""
+        return [element.text for element in
+                self.selenium.find_elements(*self._emails_locator)]
 
     @property
     def email(self):
@@ -100,12 +100,18 @@ class SignIn(Base):
     @property
     def selected_email(self):
         """Return the value of the selected email of returning user's multiple emails"""
-        return self.signed_in_email
+        for email in self.selenium.find_elements(*self._emails_locator):
+            if email.find_element(By.TAG_NAME, 'input').is_selected():
+                return email.text
 
-    def select_email_checkbox(self, value):
-        """ Select email from the returning user's multiple emails """
-        checkbox = self.selenium.find_element(By.CSS_SELECTOR, "input[value='%s']" % value)
-        checkbox.click()
+    def select_email(self, value):
+        """Select email from the returning user's multiple emails."""
+        for email in self.selenium.find_elements(*self._emails_locator):
+            if email.text == value:
+                email.click()
+                break
+        else:
+            raise Exception('Email not found: %s' % value)
 
     @property
     def password(self):
@@ -216,10 +222,3 @@ class SignIn(Base):
     def sign_in_returning_user(self):
         """Signs in with the stored user."""
         self.click_sign_in_returning_user()
-
-    def sign_in_add_another_email(self, email):
-        self.click_add_another_email_address()
-        self.new_email = email
-        self.click_add_new_email()
-        self.close_window()
-        self.switch_to_main_window()
