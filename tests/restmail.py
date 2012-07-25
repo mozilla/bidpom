@@ -11,6 +11,7 @@ import requests
 
 
 def get_mail(username, message_count=1, timeout=60):
+    username = username.partition('@restmail.net')[0]
     end_time = time.time() + timeout
     while(True):
         response = requests.get(
@@ -22,9 +23,10 @@ def get_mail(username, message_count=1, timeout=60):
         time.sleep(0.5)
         if(time.time() > end_time):
             break
-    raise Exception('Timeout getting restmail for %(USERNAME)s. '
-                    'Expected %(EXPECTED_MESSAGE_COUNT)s messages '
-                    'but there were %(ACTUAL_MESSAGE_COUNT)s.' % {
+    raise Exception('Timeout after %(TIMEOUT)s seconds getting restmail for '
+                    '%(USERNAME)s. Expected %(EXPECTED_MESSAGE_COUNT)s '
+                    'messages but there were %(ACTUAL_MESSAGE_COUNT)s.' % {
+                        'TIMEOUT': timeout,
                         'USERNAME': username,
                         'EXPECTED_MESSAGE_COUNT': message_count,
                         'ACTUAL_MESSAGE_COUNT': len(restmail)})
