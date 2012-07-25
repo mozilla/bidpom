@@ -13,6 +13,7 @@ class MockUser(dict):
         self['id'] = 'bidpom_%s' % uuid.uuid1()
         self['primary_email'] = '%s@restmail.net' % self.id
         self['password'] = 'password'
+        self['additional_emails'] = []
 
         self.update(**kwargs)
 
