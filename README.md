@@ -4,7 +4,7 @@ Selenium compatible page object model for Mozilla's BrowserID.
 
 Documentation
 -------------
-See the project's [wiki](https://github.com/davehunt/bidpom/wiki).
+See the project's [wiki](https://github.com/mozilla/bidpom/wiki).
 
 License
 -------
