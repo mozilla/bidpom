@@ -13,7 +13,7 @@ env:
 
 notifications:
   email:
-    - dave.hunt@gmail.com
+    - webqa-ci@mozilla.org
   irc:
     - "irc.mozilla.org#automation"
     - "irc.mozilla.org#identity"
