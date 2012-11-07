@@ -12,8 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class CompleteRegistration(Base):
 
-    _email_locator = (By.ID, 'email')
-    _password_locator = (By.ID, 'password')
+    _email_locator = (By.ID, 'authentication_email')
+    _password_locator = (By.ID, 'authentication_password')
     _finish_locator = (By.CSS_SELECTOR, 'div.submit > button')
     _thank_you_locator = (By.ID, 'congrats')
 
