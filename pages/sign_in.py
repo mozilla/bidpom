@@ -17,7 +17,7 @@ class SignIn(Base):
     _emails_locator = (By.CSS_SELECTOR, 'label[for^=email_]')
     _email_locator = (By.ID, 'authentication_email')
     _login_password_locator = (By.ID, 'authentication_password')
-    _password_locator = (By.ID, 'password')
+    _register_password_locator = (By.ID, 'password')
     _verify_password_locator = (By.ID, 'vpassword')
     _next_locator = (By.CSS_SELECTOR, 'button.start')
     _sign_in_locator = (By.CSS_SELECTOR, 'button.returning')
@@ -118,24 +118,26 @@ class SignIn(Base):
             raise Exception('Email not found: %s' % value)
 
     @property
-    def password(self):
+    def register_password(self):
         """Get the value of the password field."""
-        if self.is_element_present(*self._password_locator):
-            return self.selenium.find_element(*self._password_locator).get_attribute('value')
-        elif self.is_element_present(*self._login_password_locator):
-            return self.selenium.find_element(*self._login_password_locator).get_attribute('value')
+        return self.selenium.find_element(*self._register_password_locator).get_attribute('value')
 
-    @password.setter
-    def password(self, value):
+    @property
+    def login_password(self):
+        return self.selenium.find_element(*self._login_password_locator).get_attribute('value')
+
+    @register_password.setter
+    def register_password(self, value):
         """Set the value of the password field."""
-        if self.is_element_present(*self._password_locator):
-            password = self.selenium.find_element(*self._password_locator)
-            password.clear()
-            password.send_keys(value)
-        elif self.is_element_present(*self._login_password_locator):
-            password = self.selenium.find_element(*self._login_password_locator)
-            password.clear()
-            password.send_keys(value)
+        password = self.selenium.find_element(*self._register_password_locator)
+        password.clear()
+        password.send_keys(value)
+
+    @login_password.setter
+    def login_password(self, value):
+        password = self.selenium.find_element(*self._login_password_locator)
+        password.clear()
+        password.send_keys(value)
 
     @property
     def verify_password(self):
@@ -236,14 +238,14 @@ class SignIn(Base):
         """Signs in using the specified email address and password."""
         self.email = email
         self.click_next(expect='password')
-        self.password = password
+        self.login_password = password
         self.click_sign_in()
 
     def sign_in_new_user(self, email, password):
         """Requests verification email using the specified email address."""
         self.email = email
         self.click_next(expect='verify')
-        self.password = password
+        self.register_password = password
         self.verify_password = password
         self.click_verify_email()
         self.close_window()

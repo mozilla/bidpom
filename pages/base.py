@@ -20,12 +20,8 @@ class Base(object):
         self.selenium.switch_to_window(self._main_window_handle)
 
     def is_element_present(self, *locator):
-        self.selenium.implicitly_wait(0)
         try:
             self.selenium.find_element(*locator)
             return True
         except NoSuchElementException:
             return False
-        finally:
-            # set back to where you once belonged
-            self.selenium.implicitly_wait(0)

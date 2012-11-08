@@ -30,8 +30,8 @@ class TestSignIn(BaseTest):
         signin.email = mozwebqa.email
         assert signin.email == mozwebqa.email, "email getter failed"
         signin.click_next(expect='password')
-        signin.password = mozwebqa.password
-        assert signin.password == mozwebqa.password, "password getter failed"
+        signin.login_password = mozwebqa.password
+        assert signin.login_password == mozwebqa.password, "password getter failed"
         signin.click_sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
@@ -55,7 +55,7 @@ class TestSignIn(BaseTest):
         print 'signing in as %s' % user.primary_email
         signin.email = user.primary_email
         signin.click_next(expect='verify')
-        signin.password = user.password
+        signin.register_password = user.password
         signin.verify_password = user.password
         assert signin.verify_password == user.password, 'verify password getter failed'
         signin.click_verify_email()

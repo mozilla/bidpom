@@ -30,7 +30,7 @@ class TestResetPassword(BaseTest):
         signin.click_next()
         signin.click_forgot_password()
         user.password += '_new'
-        signin.password = user.password
+        signin.register_password = user.password
         signin.verify_password = user.password
         signin.click_reset_password()
         assert signin.check_email_at_address == user.primary_email
