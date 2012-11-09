@@ -122,17 +122,17 @@ class SignIn(Base):
         """Get the value of the register password field."""
         return self.selenium.find_element(*self._register_password_locator).get_attribute('value')
 
-    @property
-    def login_password(self):
-        """Get the value of the login password field."""
-        return self.selenium.find_element(*self._login_password_locator).get_attribute('value')
-
     @register_password.setter
     def register_password(self, value):
         """Set the value of the register password field."""
         password = self.selenium.find_element(*self._register_password_locator)
         password.clear()
         password.send_keys(value)
+
+    @property
+    def login_password(self):
+        """Get the value of the login password field."""
+        return self.selenium.find_element(*self._login_password_locator).get_attribute('value')
 
     @login_password.setter
     def login_password(self, value):
