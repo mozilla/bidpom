@@ -6,8 +6,11 @@
 
 import py
 
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 def pytest_runtest_setup(item):
+    item.config.option.api = 'webdriver'
     pytest_mozwebqa = py.test.config.pluginmanager.getplugin('mozwebqa')
     pytest_mozwebqa.TestSetup.email = item.config.option.email
     pytest_mozwebqa.TestSetup.password = item.config.option.password
@@ -26,4 +29,9 @@ def pytest_addoption(parser):
 
 
 def pytest_funcarg__mozwebqa(request):
-    return request.getfuncargvalue('mozwebqa')
+    mozwebqa = request.getfuncargvalue('mozwebqa')
+    mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
+    WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
+        lambda s: s.find_element_by_css_selector('#loggedout button').is_displayed())
+    mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+    return mozwebqa
