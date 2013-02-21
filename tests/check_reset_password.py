@@ -50,4 +50,4 @@ class TestResetPassword(BaseTest):
         complete_registration = CompleteRegistration(mozwebqa.selenium,
             mozwebqa.timeout,
             expect='success')
-        assert '%s has been verified!' %user.primary_email in complete_registration.thank_you
+        assert '%s has been verified!' % user.primary_email in complete_registration.thank_you
