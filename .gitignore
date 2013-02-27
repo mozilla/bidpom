@@ -2,3 +2,4 @@
 *.komodoproject
 build
 results
+*egg*
