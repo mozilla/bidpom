@@ -6,7 +6,7 @@ python:
   - 2.6
   - 2.7
 
-script: py.test --baseurl=http://beta.123done.org --driver=firefox -m travis tests
+script: py.test --baseurl=http://beta.123done.org --driver=firefox --webqatimeout=90 -m travis tests
 
 env:
   - DISPLAY=':99.0'
