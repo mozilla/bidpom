@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-
+import time
 import pytest
 
 from .. import BrowserID
@@ -29,25 +29,21 @@ class TestResetPassword(BaseTest):
         signin.email = user.primary_email
         signin.click_next()
         signin.click_forgot_password()
-        user.password += '_new'
-        signin.register_password = user.password
-        signin.verify_password = user.password
-        signin.click_reset_password()
-        assert signin.check_email_at_address == user.primary_email
-
-        signin.close_window()
-        signin.switch_to_main_window()
         mail = restmail.get_mail(user.primary_email,
                                  message_count=2,
                                  timeout=mozwebqa.timeout)
         assert 'Click to reset your password' in mail[1]['text']
-
         reset_url = re.search(BrowserID.RESET_URL_REGEX,
-            mail[1]['text']).group(0)
+                              mail[1]['text']).group(0)
+        signin.switch_to_main_window()
         mozwebqa.selenium.get(reset_url)
 
-        from .. pages.complete_registration import CompleteRegistration
-        complete_registration = CompleteRegistration(mozwebqa.selenium,
-            mozwebqa.timeout,
-            expect='success')
-        assert '%s has been verified!' % user.primary_email in complete_registration.thank_you
+        from .. pages.reset_password import ResetPassword
+
+        reset_password = ResetPassword(mozwebqa.selenium)
+        user.password += '_new'
+        reset_password.new_password = user.password
+        reset_password.verify_password = user.password
+        reset_password.click_finish()
+
+        assert '%s has been verified!' % user.primary_email in reset_password.thank_you
