@@ -25,6 +25,7 @@ class SignIn(Base):
     _verify_email_locator = (By.ID, 'verify_user')
     _forgot_password_locator = (By.ID, 'forgotPassword')
     _reset_password_locator = (By.ID, 'password_reset')
+    _confirm_message_locator = (By.CSS_SELECTOR, '.contents h2')
     _check_email_at_locator = (By.CSS_SELECTOR, '#wait .contents h2 + p strong')
     _add_another_email_locator = (By.ID, 'useNewEmail')
     _new_email_locator = (By.ID, 'newEmail')
@@ -56,9 +57,6 @@ class SignIn(Base):
             time.sleep(2)  # TODO: Remove this sleep
         else:
             raise Exception('Unknown expect value: %s' % expect)
-
-    def close_window(self):
-        self.selenium.close()
 
     @property
     def signed_in_email(self):
@@ -202,8 +200,7 @@ class SignIn(Base):
         """Clicks 'forgot password' link (visible after entering a valid email)"""
         self.selenium.find_element(*self._forgot_password_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._reset_password_locator).is_displayed())
+            lambda s: s.find_element(*self._confirm_message_locator).is_displayed())
 
     def click_reset_password(self):
         """Clicks 'reset password' after forgot password and new passwords entered"""
