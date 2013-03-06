@@ -58,9 +58,6 @@ class SignIn(Base):
         else:
             raise Exception('Unknown expect value: %s' % expect)
 
-    def close_window(self):
-        self.selenium.close()
-
     @property
     def signed_in_email(self):
         """Get the value of the email that is currently signed in."""

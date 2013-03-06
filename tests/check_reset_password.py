@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import re
-import time
+
 import pytest
 
 from .. import BrowserID
