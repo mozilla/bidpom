@@ -25,7 +25,7 @@ class SignIn(Base):
     _verify_email_locator = (By.ID, 'verify_user')
     _forgot_password_locator = (By.ID, 'forgotPassword')
     _reset_password_locator = (By.ID, 'password_reset')
-    _confirm_message_locator = (By.CSS_SELECTOR, '.contents h2')
+    _confirm_message_locator = (By.XPATH, "//h2[.='Confirm your email address']")
     _check_email_at_locator = (By.CSS_SELECTOR, '#wait .contents h2 + p strong')
     _add_another_email_locator = (By.ID, 'useNewEmail')
     _new_email_locator = (By.ID, 'newEmail')
