@@ -45,5 +45,5 @@ class BaseTest(object):
         complete_registration = CompleteRegistration(selenium,
                                                      timeout,
                                                      expect='success')
-        assert 'Thank you' in complete_registration.thank_you
+        assert user['primary_email'] in complete_registration.user_loggedin
         return user

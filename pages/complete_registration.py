@@ -15,14 +15,14 @@ class CompleteRegistration(Base):
     _email_locator = (By.ID, 'authentication_email')
     _password_locator = (By.ID, 'authentication_password')
     _finish_locator = (By.CSS_SELECTOR, 'div.submit > button')
-    _thank_you_locator = (By.ID, 'congrats')
+    _user_loggedin_locator = (By.CSS_SELECTOR, '#loggedin > span')
 
     def __init__(self, selenium, timeout, expect='success'):
         Base.__init__(self, selenium, timeout)
 
         if expect == 'success':
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(*self._thank_you_locator).is_displayed())
+                lambda s: s.find_element(*self._user_loggedin_locator).is_displayed())
         elif expect == 'verify':
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.find_element(*self._password_locator).is_displayed())
@@ -53,6 +53,6 @@ class CompleteRegistration(Base):
             lambda s: s.find_element(*self._thank_you_locator).is_displayed())
 
     @property
-    def thank_you(self):
+    def user_loggedin(self):
         """Returns the 'thank you' message."""
-        return self.selenium.find_element(*self._thank_you_locator).text
+        return self.selenium.find_element(*self._user_loggedin_locator).text
