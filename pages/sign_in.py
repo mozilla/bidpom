@@ -19,7 +19,8 @@ class SignIn(Base):
     _login_password_locator = (By.ID, 'authentication_password')
     _register_password_locator = (By.ID, 'password')
     _verify_password_locator = (By.ID, 'vpassword')
-    _next_locator = (By.CSS_SELECTOR, 'button.isStart')
+    _desktop_next_locator = (By.CSS_SELECTOR, 'button.isDesktop.isStart')
+    _mobile_next_locator = (By.CSS_SELECTOR, 'button.isMobile.isStart')
     _sign_in_locator = (By.CSS_SELECTOR, 'button.isReturning')
     _sign_in_returning_user_locator = (By.ID, 'signInButton')
     _verify_email_locator = (By.ID, 'verify_user')
@@ -158,7 +159,12 @@ class SignIn(Base):
 
     def click_next(self, expect='password'):
         """Clicks the 'next' button."""
-        self.selenium.find_element(*self._next_locator).click()
+
+        if self.selenium.find_element(*self._desktop_next_locator).is_displayed():
+            self.selenium.find_element(*self._desktop_next_locator).click()
+        else:
+            self.selenium.find_element(*self._mobile_next_locator).click()
+
         if expect == 'password':
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.find_element(
