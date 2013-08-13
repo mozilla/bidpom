@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import time
+
 from base import Base
 
 from selenium.webdriver.common.by import By
@@ -189,9 +191,13 @@ class SignIn(Base):
         if expect == 'login':
             self.switch_to_main_window()
         elif expect == 'remember':
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._your_computer_content_locator).is_displayed())
+            time.sleep(5)
+            if len(self.selenium.window_handles) is 1:
+                self.switch_to_main_window()
+            else:
+                WebDriverWait(self.selenium, self.timeout).until(
+                    lambda s: s.find_element(
+                        *self._your_computer_content_locator).is_displayed())
         else:
             raise Exception('Unknown expect value: %s' % expect)
 
