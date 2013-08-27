@@ -34,7 +34,7 @@ class BaseTest(object):
     def create_verified_user(self, selenium, timeout):
         user = MockUser()
         from .. pages.sign_in import SignIn
-        signin = SignIn(selenium, timeout, expect='new')
+        signin = SignIn(selenium, timeout)
         signin.sign_in_new_user(user.primary_email, user.password)
         mail = restmail.get_mail(user.primary_email, timeout=timeout)
         verify_url = re.search(BrowserID.VERIFY_URL_REGEX,

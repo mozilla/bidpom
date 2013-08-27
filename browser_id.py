@@ -18,17 +18,14 @@ class BrowserID(object):
         self.selenium = selenium
         self.timeout = timeout
 
-    def sign_in(self, email, password):
-        """Signs in using the specified email address and password."""
+    def sign_in(self, email=None, password=None):
+        """Signs in a user, either with the specified email address and password, or a returning user."""
         from pages.sign_in import SignIn
-        sign_in = SignIn(self.selenium, timeout=self.timeout, expect='new')
-        sign_in.sign_in(email, password)
-
-    def sign_in_returning_user(self):
-        """Signs in a returning user, without need to set an expectation."""
-        from pages.sign_in import SignIn
-        sign_in = SignIn(self.selenium, timeout=self.timeout, expect='returning')
-        sign_in.click_sign_in_returning_user(expect='remember')
-        if len(self.selenium.window_handles) is 2:
-            sign_in.click_this_is_not_my_computer()
-            sign_in.switch_to_main_window()
+        sign_in = SignIn(self.selenium, timeout=self.timeout)
+        if sign_in.is_initial_sign_in:
+            sign_in.sign_in(email, password)
+        else:
+            sign_in.sign_in_returning_user()
+            if len(self.selenium.window_handles) == 2:
+                sign_in.click_this_is_not_my_computer()
+                sign_in.switch_to_main_window()

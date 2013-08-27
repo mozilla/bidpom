@@ -26,7 +26,7 @@ class TestSignIn(BaseTest):
 
     def test_sign_in(self, mozwebqa):
         from .. pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.email = mozwebqa.email
         assert signin.email == mozwebqa.email, "email getter failed"
         signin.click_next(expect='password')
@@ -41,7 +41,7 @@ class TestSignIn(BaseTest):
     def test_sign_in_new_user_helper(self, mozwebqa):
         user = MockUser()
         from .. pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         print 'signing in as %s' % user.primary_email
         signin.sign_in_new_user(user.primary_email, 'password')
         mail = restmail.get_mail(user.primary_email, timeout=mozwebqa.timeout)
@@ -51,7 +51,7 @@ class TestSignIn(BaseTest):
     def test_sign_in_new_user(self, mozwebqa):
         user = MockUser()
         from .. pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='new')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         print 'signing in as %s' % user.primary_email
         signin.email = user.primary_email
         signin.click_next(expect='verify')
@@ -83,21 +83,19 @@ class TestSignIn(BaseTest):
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        while time.time() < (login_time + 60):
-            time.sleep(15)
-            mozwebqa.selenium.find_element_by_css_selector('#loggedout button')
+        time.sleep(61)
 
         mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
 
         from .. pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
-        signin.click_sign_in_returning_user(expect='remember')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
+        signin.click_sign_in_returning_user()
         signin.click_i_trust_this_computer()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
-    def test_sign_in_is_this_your_computer_without_delay(self, mozwebqa):
+    def test_sign_in_is_this_your_computer_immediately(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
@@ -109,46 +107,42 @@ class TestSignIn(BaseTest):
         mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
 
         from .. pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
-        signin.click_sign_in_returning_user(expect='remember')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
+        signin.click_sign_in_returning_user()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
-    def test_sign_in_returning_user_helper(self, mozwebqa):
+    def test_sign_in_helper_with_returning_user(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
-        login_time = time.time()
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        while time.time() < (login_time + 60):
-            time.sleep(15)
-            mozwebqa.selenium.find_element_by_css_selector('#loggedout button')
+        time.sleep(61)
 
         mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
 
-        browser_id.sign_in_returning_user()
+        browser_id.sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
 
-    def test_sign_in_returning_user_helper_without_delay(self, mozwebqa):
+    def test_sign_in_helper_with_returning_user_immediately(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
-        login_time = time.time()
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
         mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
 
-        browser_id.sign_in_returning_user()
+        browser_id.sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element_by_id('loggedin').is_displayed())
