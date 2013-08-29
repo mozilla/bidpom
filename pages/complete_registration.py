@@ -15,7 +15,7 @@ class CompleteRegistration(Base):
     _email_locator = (By.ID, 'authentication_email')
     _password_locator = (By.ID, 'authentication_password')
     _finish_locator = (By.CSS_SELECTOR, 'div.submit > button')
-    _user_loggedin_locator = (By.CSS_SELECTOR, '#loggedin > span')
+    _user_loggedin_locator = (By.CSS_SELECTOR, '#loggedin span')
 
     def __init__(self, selenium, timeout, expect='success'):
         Base.__init__(self, selenium, timeout)

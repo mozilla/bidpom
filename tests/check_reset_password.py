@@ -21,7 +21,7 @@ class TestResetPassword(BaseTest):
         user = self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element_by_css_selector('button.btn-persona').click()
 
         from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
