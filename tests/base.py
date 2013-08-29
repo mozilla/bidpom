@@ -29,7 +29,7 @@ class BaseTest(object):
             lambda s: s.find_element_by_id('loggedin').is_displayed())
         selenium.find_element_by_css_selector('#loggedin a').click()
         WebDriverWait(selenium, timeout).until(
-            lambda s: s.find_element_by_css_selector('#loggedout button').is_displayed())
+            lambda s: s.find_element_by_css_selector('button.btn-persona').is_displayed())
 
     def create_verified_user(self, selenium, timeout):
         user = MockUser()

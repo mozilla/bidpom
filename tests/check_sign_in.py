@@ -85,9 +85,9 @@ class TestSignIn(BaseTest):
 
         while time.time() < (login_time + 60):
             time.sleep(15)
-            mozwebqa.selenium.find_element_by_css_selector('#loggedout button')
+            mozwebqa.selenium.find_element_by_css_selector('button.btn-persona')
 
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element_by_css_selector('button.btn-persona').click()
 
         from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
