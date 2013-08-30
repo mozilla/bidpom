@@ -7,6 +7,7 @@
 import re
 
 import requests
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
 from .. import BrowserID
@@ -15,6 +16,10 @@ import restmail
 
 
 class BaseTest(object):
+
+    _persona_login_button_locator = (By.CSS_SELECTOR, 'button.btn-persona')
+    _persona_logged_in_indicator_locator = (By.ID, 'loggedin')
+    _persona_log_out_link_locator = (By.CSS_SELECTOR, '#loggedin a')
 
     def browserid_url(self, base_url):
         response = requests.get('%s/' % base_url, verify=False)
@@ -26,10 +31,10 @@ class BaseTest(object):
 
     def log_out(self, selenium, timeout):
         WebDriverWait(selenium, timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
-        selenium.find_element_by_css_selector('#loggedin a').click()
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
+        selenium.find_element(*self._persona_log_out_link_locator).click()
         WebDriverWait(selenium, timeout).until(
-            lambda s: s.find_element_by_css_selector('button.btn-persona').is_displayed())
+            lambda s: s.find_element(*self._persona_login_button_locator).is_displayed())
 
     def create_verified_user(self, selenium, timeout):
         user = MockUser()
