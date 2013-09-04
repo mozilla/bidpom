@@ -79,11 +79,10 @@ class TestSignIn(BaseTest):
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
-        login_time = time.time()
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        time.sleep(61)
+        self._wait_to_delay_next_login(mozwebqa.selenium)
 
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
@@ -122,7 +121,7 @@ class TestSignIn(BaseTest):
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        time.sleep(61)
+        self._wait_to_delay_next_login(mozwebqa.selenium)
 
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
@@ -146,3 +145,10 @@ class TestSignIn(BaseTest):
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
+
+    def _wait_to_delay_next_login(self, selenium):
+        # We cannot just sleep for 60 seconds as the browser will timeout after 30 seconds
+        start_time = time.time()
+        while time.time() < (start_time + 60):
+            time.sleep(15)
+            selenium.find_element(*self._persona_login_button_locator)

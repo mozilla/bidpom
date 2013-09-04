@@ -37,7 +37,8 @@ class TestAddEmail(BaseTest):
         mail = restmail.get_mail(user.additional_emails[0],
                                  timeout=mozwebqa.timeout)
         assert 'Click this confirmation link to sign in' in mail[0]['text']
-        confirm_url = re.search(BrowserID.CONFIRM_URL_REGEX, mail[0]['text']).group(0)
+        confirm_url = re.search(
+            BrowserID.CONFIRM_URL_REGEX, mail[0]['text']).group(0)
 
         mozwebqa.selenium.get(confirm_url)
         from .. pages.complete_registration import CompleteRegistration

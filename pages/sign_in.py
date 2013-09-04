@@ -50,9 +50,9 @@ class SignIn(Base):
                 raise Exception('Popup has not loaded')
 
         # Replace expectations with two conditions
-        WebDriverWait(self.selenium, self.timeout).until(self._wait_for_page_ready)
+        WebDriverWait(self.selenium, self.timeout).until(self._is_page_ready)
 
-    def _wait_for_page_ready(self, s):
+    def _is_page_ready(self, s):
         s.implicitly_wait(0)
         is_page_ready = s.find_element(*self._email_locator).is_displayed() or \
             s.find_element(*self._sign_in_returning_user_locator).is_displayed()
