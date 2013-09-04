@@ -29,9 +29,10 @@ def pytest_addoption(parser):
 
 
 def pytest_funcarg__mozwebqa(request):
+    persona_login_button_locator_css = 'button.btn-persona'
     mozwebqa = request.getfuncargvalue('mozwebqa')
     mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
     WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-        lambda s: s.find_element_by_css_selector('#loggedout button').is_displayed())
-    mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        lambda s: s.find_element_by_css_selector(persona_login_button_locator_css).is_displayed())
+    mozwebqa.selenium.find_element_by_css_selector(persona_login_button_locator_css).click()
     return mozwebqa

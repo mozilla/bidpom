@@ -22,7 +22,7 @@ class TestSignIn(BaseTest):
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in(self, mozwebqa):
         from .. pages.sign_in import SignIn
@@ -35,7 +35,7 @@ class TestSignIn(BaseTest):
         signin.click_sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     @pytest.mark.travis
     def test_sign_in_new_user_helper(self, mozwebqa):
@@ -71,21 +71,21 @@ class TestSignIn(BaseTest):
         self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_is_this_your_computer(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
         login_time = time.time()
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
         time.sleep(61)
 
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
         from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
@@ -93,56 +93,56 @@ class TestSignIn(BaseTest):
         signin.click_i_trust_this_computer()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_is_this_your_computer_immediately(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
         from .. pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.click_sign_in_returning_user()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_helper_with_returning_user(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
         time.sleep(61)
 
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
         browser_id.sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_helper_with_returning_user_immediately(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
 
-        mozwebqa.selenium.find_element_by_css_selector('#loggedout button').click()
+        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
         browser_id.sign_in()
 
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element_by_id('loggedin').is_displayed())
+            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
