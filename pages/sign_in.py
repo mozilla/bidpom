@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import time
+
 from base import Base
 
 from selenium.webdriver.common.by import By
@@ -35,8 +37,8 @@ class SignIn(Base):
     _this_is_my_computer_locator = (By.ID, 'this_is_my_computer')
     _this_is_not_my_computer_locator = (By.ID, 'this_is_not_my_computer')
 
-    def __init__(self, selenium, timeout, expect='new'):
-        Base.__init__(self, selenium, timeout)
+    def __init__(self, selenium, timeout, expect=None, default_implicit_wait=10):
+        Base.__init__(self, selenium, timeout, default_implicit_wait)
 
         if self.selenium.title != self._page_title:
             for handle in self.selenium.window_handles:
@@ -47,17 +49,20 @@ class SignIn(Base):
             else:
                 raise Exception('Popup has not loaded')
 
-        if expect == 'new':
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(*self._email_locator).is_displayed())
-        elif expect == 'returning':
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._sign_in_returning_user_locator).is_displayed())
-            import time
-            time.sleep(2)  # TODO: Remove this sleep
-        else:
-            raise Exception('Unknown expect value: %s' % expect)
+        # Replace expectations with two conditions
+        WebDriverWait(self.selenium, self.timeout).until(self._is_page_ready)
+
+    def _is_page_ready(self, s):
+        s.implicitly_wait(0)
+        is_page_ready = s.find_element(*self._email_locator).is_displayed() or \
+            s.find_element(*self._sign_in_returning_user_locator).is_displayed()
+        s.implicitly_wait(self.default_implicit_wait)
+        return is_page_ready
+
+    @property
+    def is_initial_sign_in(self):
+        """Is this the first sign in for the user?"""
+        return self.selenium.find_element(*self._email_locator).is_displayed()
 
     @property
     def signed_in_email(self):
@@ -181,19 +186,18 @@ class SignIn(Base):
         self.selenium.find_element(*self._sign_in_locator).click()
         self.switch_to_main_window()
 
-    def click_sign_in_returning_user(self, expect='login'):
+    def click_sign_in_returning_user(self, expect=None):
         """Clicks the 'sign in' button."""
         self.selenium.find_element(
             *self._sign_in_returning_user_locator).click()
 
-        if expect == 'login':
+        time.sleep(5)
+        if len(self.selenium.window_handles) == 1:
             self.switch_to_main_window()
-        elif expect == 'remember':
+        else:
             WebDriverWait(self.selenium, self.timeout).until(
                 lambda s: s.find_element(
                     *self._your_computer_content_locator).is_displayed())
-        else:
-            raise Exception('Unknown expect value: %s' % expect)
 
     def click_verify_email(self):
         """Clicks 'verify email' button."""
