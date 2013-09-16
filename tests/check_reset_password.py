@@ -8,7 +8,7 @@ import re
 
 import pytest
 
-from .. import BrowserID
+from browserid import BrowserID
 from base import BaseTest
 import restmail
 
@@ -23,7 +23,7 @@ class TestResetPassword(BaseTest):
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
         signin.click_this_is_not_me()
         signin.email = user.primary_email
@@ -38,7 +38,7 @@ class TestResetPassword(BaseTest):
         signin.switch_to_main_window()
         mozwebqa.selenium.get(reset_url)
 
-        from .. pages.reset_password import ResetPassword
+        from browserid.pages.reset_password import ResetPassword
 
         reset_password = ResetPassword(mozwebqa.selenium)
         user.password += '_new'
