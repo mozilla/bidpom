@@ -13,9 +13,10 @@ class Base(object):
 
     _page_title = 'Mozilla Persona: A Better Way to Sign In'
 
-    def __init__(self, selenium, timeout=60):
+    def __init__(self, selenium, timeout=60, default_implicit_wait=10):
         self.selenium = selenium
         self.timeout = timeout
+        self.default_implicit_wait = default_implicit_wait
         self._main_window_handle = self.selenium.current_window_handle
 
     def switch_to_main_window(self):

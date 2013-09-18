@@ -24,7 +24,7 @@ class TestResetPassword(BaseTest):
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
         from browserid.pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout, expect='returning')
+        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.click_this_is_not_me()
         signin.email = user.primary_email
         signin.click_next()
