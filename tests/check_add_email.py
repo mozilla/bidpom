@@ -8,7 +8,7 @@ import re
 
 import pytest
 
-from .. import BrowserID
+from browserid import BrowserID
 from base import BaseTest
 import restmail
 
@@ -25,7 +25,7 @@ class TestAddEmail(BaseTest):
         self.log_out(mozwebqa.selenium, mozwebqa.timeout)
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.click_add_another_email_address()
         signin.new_email = user.additional_emails[0]
@@ -41,7 +41,7 @@ class TestAddEmail(BaseTest):
             BrowserID.CONFIRM_URL_REGEX, mail[0]['text']).group(0)
 
         mozwebqa.selenium.get(confirm_url)
-        from .. pages.complete_registration import CompleteRegistration
+        from browserid.pages.complete_registration import CompleteRegistration
         complete_registration = CompleteRegistration(mozwebqa.selenium,
                                                      mozwebqa.timeout,
                                                      expect='success')

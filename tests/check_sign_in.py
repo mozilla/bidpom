@@ -8,8 +8,8 @@ import pytest
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
-from .. import BrowserID
-from .. mocks.user import MockUser
+from browserid import BrowserID
+from mocks.user import MockUser
 from base import BaseTest
 import restmail
 
@@ -25,7 +25,7 @@ class TestSignIn(BaseTest):
             lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in(self, mozwebqa):
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.email = mozwebqa.email
         assert signin.email == mozwebqa.email, "email getter failed"
@@ -40,7 +40,7 @@ class TestSignIn(BaseTest):
     @pytest.mark.travis
     def test_sign_in_new_user_helper(self, mozwebqa):
         user = MockUser()
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         print 'signing in as %s' % user.primary_email
         signin.sign_in_new_user(user.primary_email, 'password')
@@ -50,7 +50,7 @@ class TestSignIn(BaseTest):
     @pytest.mark.travis
     def test_sign_in_new_user(self, mozwebqa):
         user = MockUser()
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         print 'signing in as %s' % user.primary_email
         signin.email = user.primary_email
@@ -86,7 +86,7 @@ class TestSignIn(BaseTest):
 
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.click_sign_in_returning_user()
         signin.click_i_trust_this_computer()
@@ -105,7 +105,7 @@ class TestSignIn(BaseTest):
 
         mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
 
-        from .. pages.sign_in import SignIn
+        from browserid.pages.sign_in import SignIn
         signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
         signin.click_sign_in_returning_user()
 
