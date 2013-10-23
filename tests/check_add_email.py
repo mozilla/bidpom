@@ -36,7 +36,10 @@ class TestAddEmail(BaseTest):
 
         mail = restmail.get_mail(user.additional_emails[0],
                                  timeout=mozwebqa.timeout)
-        assert 'Click this link to confirm access' in mail[0]['text']
+
+        # Check that the email appears to be valid
+        self.email_appears_valid(mail[0]['text'])
+
         confirm_url = re.search(
             BrowserID.CONFIRM_URL_REGEX, mail[0]['text']).group(0)
 

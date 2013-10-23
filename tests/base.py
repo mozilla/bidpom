@@ -52,3 +52,7 @@ class BaseTest(object):
                                                      expect='success')
         assert user['primary_email'] in complete_registration.user_loggedin
         return user
+
+    def email_appears_valid(self, email_text):
+        assert 'Click' in email_text and 'link' in email_text, \
+            'The strings "Click" and "link" were not found in %s' % email_text
