@@ -77,6 +77,8 @@ class TestSignIn(BaseTest):
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
+    @pytest.mark.xfail(reason='Issue 4125 - "is this your computer" screen not being shown for train-2014.04.16')
+    # https://github.com/mozilla/persona/issues/4125
     def test_sign_in_is_this_your_computer(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
