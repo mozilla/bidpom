@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class SignIn(Base):
 
+    _form_completing_loading_locator = (By.CSS_SELECTOR, '.form.completing.loading')
     _this_is_not_me_locator = (By.CSS_SELECTOR, '.isDesktop.thisIsNotMe')
     _signed_in_email_locator = (By.CSS_SELECTOR, 'label[for=email_0]')
     _emails_locator = (By.CSS_SELECTOR, 'label[for^=email_]')
@@ -184,6 +185,9 @@ class SignIn(Base):
     def click_sign_in(self):
         """Clicks the 'sign in' button."""
         self.selenium.find_element(*self._sign_in_locator).click()
+        WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: s.find_element(
+                    *self._form_completing_loading_locator).is_displayed())
         self.switch_to_main_window()
 
     def click_sign_in_returning_user(self, expect=None):
