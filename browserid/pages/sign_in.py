@@ -47,6 +47,7 @@ class SignIn(Base):
                 self.selenium.switch_to_window(handle)
                 WebDriverWait(self.selenium, self.timeout).until(lambda s: s.title)
                 if self.selenium.title == self._page_title:
+                    self._sign_in_window_handle = handle
                     break
             else:
                 raise Exception('Popup has not loaded')
@@ -191,8 +192,14 @@ class SignIn(Base):
         """Clicks the 'sign in' button."""
         self.selenium.find_element(*self._sign_in_locator).click()
         WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._form_completing_loading_locator).is_displayed())
+            lambda s: s.find_element(
+                *self._form_completing_loading_locator).is_displayed()
+        )
+
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: self._sign_in_window_handle not in self.selenium.window_handles
+        )
+
         self.switch_to_main_window()
 
     def click_sign_in_returning_user(self, expect=None):
