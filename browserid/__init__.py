@@ -1,1 +1,1 @@
-from browser_id import BrowserID
+from browser_id import BrowserID  # noqa
