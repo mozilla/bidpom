@@ -77,29 +77,6 @@ class TestSignIn(BaseTest):
         WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
             lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
 
-    @pytest.mark.xfail(reason='Issue 4125 - "is this your computer" screen not being shown for train-2014.04.16')
-    # https://github.com/mozilla/persona/issues/4125
-    def test_sign_in_is_this_your_computer(self, mozwebqa):
-        browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
-        browser_id.sign_in(mozwebqa.email, mozwebqa.password)
-
-        WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
-
-        self.log_out(mozwebqa.selenium, mozwebqa.timeout)
-
-        self._wait_to_delay_next_login(mozwebqa.selenium)
-
-        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
-
-        from browserid.pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
-        signin.click_sign_in_returning_user()
-        signin.click_i_trust_this_computer()
-
-        WebDriverWait(mozwebqa.selenium, mozwebqa.timeout).until(
-            lambda s: s.find_element(*self._persona_logged_in_indicator_locator).is_displayed())
-
     def test_sign_in_is_this_your_computer_immediately(self, mozwebqa):
         browser_id = BrowserID(mozwebqa.selenium, mozwebqa.timeout)
         browser_id.sign_in(mozwebqa.email, mozwebqa.password)
