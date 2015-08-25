@@ -15,7 +15,7 @@ def get_mail(username, message_count=1, timeout=60):
     end_time = time.time() + timeout
     while(True):
         response = requests.get(
-            'https://restmail.net/mail/%s' % username,
+            'http://restmail.net/mail/%s' % username,
             verify=False)
         restmail = json.loads(response.content)
         if len(restmail) == message_count:
