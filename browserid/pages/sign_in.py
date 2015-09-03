@@ -37,10 +37,10 @@ class SignIn(Base):
     _this_is_my_computer_locator = (By.ID, 'this_is_my_computer')
     _this_is_not_my_computer_locator = (By.ID, 'this_is_not_my_computer')
 
-    def __init__(self, selenium, timeout, expect=None, default_implicit_wait=10):
-        Base.__init__(self, selenium, timeout, default_implicit_wait)
+    def __init__(self, selenium, timeout=10):
+        Base.__init__(self, selenium, timeout)
 
-        if self.selenium.title != self._page_title:
+        if not self.selenium.title == self._page_title:
             for handle in self.selenium.window_handles:
                 self.selenium.switch_to_window(handle)
                 WebDriverWait(self.selenium, self.timeout).until(lambda s: s.title)
@@ -54,10 +54,8 @@ class SignIn(Base):
         WebDriverWait(self.selenium, self.timeout).until(self._is_page_ready)
 
     def _is_page_ready(self, s):
-        s.implicitly_wait(0)
         is_page_ready = s.find_element(*self._email_locator).is_displayed() or \
             s.find_element(*self._sign_in_returning_user_locator).is_displayed()
-        s.implicitly_wait(self.default_implicit_wait)
         return is_page_ready
 
     @property

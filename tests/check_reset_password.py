@@ -14,34 +14,36 @@ import restmail
 @pytest.mark.nondestructive
 class TestResetPassword(BaseTest):
 
-    @pytest.mark.travis
-    def test_reset_password(self, mozwebqa):
-        user = self.create_verified_user(mozwebqa.selenium, mozwebqa.timeout)
-        mozwebqa.selenium.get('%s/' % mozwebqa.base_url)
-        self.log_out(mozwebqa.selenium, mozwebqa.timeout)
-        mozwebqa.selenium.find_element(*self._persona_login_button_locator).click()
-
+    def test_reset_password(self, selenium, timeout, new_user):
+        # sign in as a new user
         from browserid.pages.sign_in import SignIn
-        signin = SignIn(mozwebqa.selenium, mozwebqa.timeout)
+        signin = SignIn(selenium, timeout)
+        signin.sign_in_new_user(new_user['email'], new_user['password'])
+        mail = restmail.get_mail(new_user['email'])
+        selenium.get(re.search(BrowserID.VERIFY_URL_REGEX, mail[0]['text']).group(0))
+        from browserid.pages.complete_registration import CompleteRegistration
+        complete_registration = CompleteRegistration(selenium, timeout)
+        assert new_user['email'] in complete_registration.user_loggedin
+        self.log_out(selenium, timeout)
+
+        # forgot password
+        selenium.find_element(*self._persona_login_button_locator).click()
+        from browserid.pages.sign_in import SignIn
+        signin = SignIn(selenium, timeout)
         signin.click_this_is_not_me()
-        signin.email = user.primary_email
+        signin.email = new_user['email']
         signin.click_next()
         signin.click_forgot_password()
-        mail = restmail.get_mail(user.primary_email,
-                                 message_count=2,
-                                 timeout=mozwebqa.timeout)
-        assert 'Click to reset your password' in mail[1]['text']
-        reset_url = re.search(BrowserID.RESET_URL_REGEX,
-                              mail[1]['text']).group(0)
         signin.switch_to_main_window()
-        mozwebqa.selenium.get(reset_url)
+        mail = restmail.get_mail(new_user['email'], message_count=2)
+        assert 'Click to reset your password' in mail[1]['text']
 
+        # reset password
+        new_user['password'] = '_{0[password]}'.format(new_user)
+        selenium.get(re.search(BrowserID.RESET_URL_REGEX, mail[1]['text']).group(0))
         from browserid.pages.reset_password import ResetPassword
-
-        reset_password = ResetPassword(mozwebqa.selenium)
-        user.password += '_new'
-        reset_password.new_password = user.password
-        reset_password.verify_password = user.password
+        reset_password = ResetPassword(selenium, timeout)
+        reset_password.new_password = new_user['password']
+        reset_password.verify_password = new_user['password']
         reset_password.click_finish()
-
-        assert '%s has been verified!' % user.primary_email in reset_password.thank_you
+        assert '{0[email]} has been verified!'.format(new_user) in reset_password.thank_you

@@ -15,7 +15,7 @@ class CompleteRegistration(Base):
     _finish_locator = (By.CSS_SELECTOR, 'div.submit > button')
     _user_loggedin_locator = (By.CSS_SELECTOR, '#loggedin span')
 
-    def __init__(self, selenium, timeout, expect='success'):
+    def __init__(self, selenium, timeout=10, expect='success'):
         Base.__init__(self, selenium, timeout)
 
         if expect == 'success':

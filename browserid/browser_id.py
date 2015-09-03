@@ -10,14 +10,14 @@ class BrowserID(object):
     RESET_URL_REGEX = 'https?:\/\/(\S+)\/reset_password\?token=(.{48})'
     INCLUDE_URL_REGEX = '(https?:\/\/(\S+))\/include\.js'
 
-    def __init__(self, selenium, timeout=60):
+    def __init__(self, selenium, timeout=10):
         self.selenium = selenium
         self.timeout = timeout
 
     def sign_in(self, email=None, password=None):
         """Signs in a user, either with the specified email address and password, or a returning user."""
         from pages.sign_in import SignIn
-        sign_in = SignIn(self.selenium, timeout=self.timeout)
+        sign_in = SignIn(self.selenium, self.timeout)
         if sign_in.is_initial_sign_in:
             sign_in.sign_in(email, password)
         else:
