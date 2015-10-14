@@ -171,18 +171,21 @@ class SignIn(Base):
         else:
             self.selenium.find_element(*self._mobile_next_locator).click()
 
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: not s.find_element(
-                *self._checking_email_provider_loading_locator).is_displayed())
+        loading = self.selenium.find_element(
+            *self._checking_email_provider_loading_locator)
 
         if expect == 'password':
+            body = self.selenium.find_element(By.TAG_NAME, 'body')
+            password = self.selenium.find_element(*self._login_password_locator)
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._login_password_locator).is_displayed())
+                lambda s: password.is_displayed()
+                and 'returning' in body.get_attribute('class')
+                and not loading.is_displayed())
         elif expect == 'verify':
+            verify = self.selenium.find_element(*self._verify_email_locator)
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._verify_email_locator).is_displayed())
+                lambda s: verify.is_displayed()
+                and not loading.is_displayed())
         else:
             raise Exception('Unknown expect value: %s' % expect)
 
