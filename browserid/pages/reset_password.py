@@ -15,6 +15,12 @@ class ResetPassword(Base):
     _finish_button_locator = (By.CSS_SELECTOR, '.submit button')
     _thank_you_locator = (By.ID, 'congrats')
 
+    def wait_for_page_to_load(self):
+        el = self.selenium.find_element(By.TAG_NAME, 'body')
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: 'needs_password' in el.get_attribute('class'))
+        return self
+
     @property
     def new_password(self):
         """Get the value of the new password field."""

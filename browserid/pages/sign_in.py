@@ -7,6 +7,7 @@ import time
 from base import Base
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as expected
 from selenium.webdriver.support.ui import WebDriverWait
 
 
@@ -171,19 +172,18 @@ class SignIn(Base):
 
         loading = self.selenium.find_element(
             *self._checking_email_provider_loading_locator)
+        WebDriverWait(self.selenium, self.timeout).until(
+            lambda s: not loading.is_displayed())
 
         if expect == 'password':
             body = self.selenium.find_element(By.TAG_NAME, 'body')
-            password = self.selenium.find_element(*self._login_password_locator)
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: password.is_displayed()
-                and 'returning' in body.get_attribute('class')
-                and not loading.is_displayed())
+                expected.visibility_of_element_located(self._login_password_locator))
+            WebDriverWait(self.selenium, self.timeout).until(
+                lambda s: 'returning' in body.get_attribute('class'))
         elif expect == 'verify':
-            verify = self.selenium.find_element(*self._verify_email_locator)
             WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: verify.is_displayed()
-                and not loading.is_displayed())
+                expected.visibility_of_element_located(self._verify_email_locator))
         else:
             raise Exception('Unknown expect value: %s' % expect)
 

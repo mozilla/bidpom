@@ -42,7 +42,7 @@ class TestResetPassword(BaseTest):
         new_user['password'] = '_{0[password]}'.format(new_user)
         selenium.get(re.search(BrowserID.RESET_URL_REGEX, mail[1]['text']).group(0))
         from browserid.pages.reset_password import ResetPassword
-        reset_password = ResetPassword(selenium, timeout)
+        reset_password = ResetPassword(selenium, timeout).wait_for_page_to_load()
         reset_password.new_password = new_user['password']
         reset_password.verify_password = new_user['password']
         reset_password.click_finish()
