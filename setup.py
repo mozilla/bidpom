@@ -9,7 +9,7 @@ except (OSError, IOError):
     description = ''
 
 setup(name='browserid',
-      version='1.1',
+      version='1.2',
       description="Mozilla BrowserID (Persona) Page Object Model",
       long_description=description,
       classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
