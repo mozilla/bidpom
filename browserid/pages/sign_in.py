@@ -170,6 +170,33 @@ class SignIn(Base):
         else:
             self.selenium.find_element(*self._mobile_next_locator).click()
 
+        # FIXME: Unfortunately there's no good way to wait for the loading
+        # spinner to settle. We can't wait for it to be hidden as it is
+        # initially hidden, so we'd continue too soon. We can't reliably wait
+        # for it to be visible (and then hidden) because it's often displayed
+        # for such a short amount of time that we might miss it due to latency.
+        # This has only become an issue in Firefox since Selenium 2.48, which
+        # brought the behaviour closer to a real user, and we're effectively
+        # clicking the loading message instead of the submit button. The best
+        # fix would be for Persona to give us some indication that the loading
+        # screen has been displayed but is no longer displayed. For now, I'm
+        # going to add a sleep of 5 seconds, which should be plenty of time for
+        # the loading screen to appear, if not also disappear. For this, I can
+        # only apologise!
+        #
+        # This is the change in Selenium that caused this:
+        # https://github.com/SeleniumHQ/selenium/commit/0eec81da52ba4dfb16de590e6e82ebafa452416f
+        #
+        # The change has caused others to see similar issues:
+        # https://github.com/SeleniumHQ/selenium/issues/1202
+        #
+        # I have raised the following issue against Persona:
+        # https://github.com/mozilla/persona/issues/4227
+        #
+        # Note that this is not a bug in Selenium, it is an enhancement that
+        # has highlighted an issue with our Persona automation.
+        time.sleep(5)
+
         loading = self.selenium.find_element(
             *self._checking_email_provider_loading_locator)
         WebDriverWait(self.selenium, self.timeout).until(
