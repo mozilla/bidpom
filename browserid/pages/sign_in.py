@@ -55,9 +55,12 @@ class SignIn(Base):
         WebDriverWait(self.selenium, self.timeout).until(self._is_page_ready)
 
     def _is_page_ready(self, s):
-        is_page_ready = s.find_element(*self._email_locator).is_displayed() or \
-            s.find_element(*self._sign_in_returning_user_locator).is_displayed()
-        return is_page_ready
+        if s.find_element(*self._email_locator).is_displayed():
+            return True
+        else:
+            body = self.selenium.find_element(By.TAG_NAME, 'body')
+            sign_in = s.find_element(*self._sign_in_returning_user_locator)
+            return sign_in.is_displayed() and 'submit_disabled' not in body.get_attribute('class')
 
     @property
     def is_initial_sign_in(self):
