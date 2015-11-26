@@ -7,7 +7,7 @@ import time
 import pytest
 from selenium.webdriver.support.ui import WebDriverWait
 
-from browserid import BrowserID
+from bidpom import BIDPOM
 from base import BaseTest
 import restmail
 
@@ -16,13 +16,13 @@ import restmail
 class TestSignIn(BaseTest):
 
     def test_sign_in_helper(self, selenium, timeout, verified_user):
-        browser_id = BrowserID(selenium, timeout)
-        browser_id.sign_in(verified_user['email'], verified_user['password'])
+        bidpom = BIDPOM(selenium, timeout)
+        bidpom.sign_in(verified_user['email'], verified_user['password'])
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in(self, selenium, timeout, verified_user):
-        from browserid.pages.sign_in import SignIn
+        from bidpom.pages.sign_in import SignIn
         signin = SignIn(selenium, timeout)
         signin.email = verified_user['email']
         assert signin.email == verified_user['email']
@@ -34,7 +34,7 @@ class TestSignIn(BaseTest):
             *self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_new_user_helper(self, new_user, selenium, timeout):
-        from browserid.pages.sign_in import SignIn
+        from bidpom.pages.sign_in import SignIn
         signin = SignIn(selenium, timeout)
         signin.sign_in_new_user(new_user['email'], new_user['password'])
         mail = restmail.get_mail(new_user['email'])
@@ -43,7 +43,7 @@ class TestSignIn(BaseTest):
         self.email_appears_valid(mail[0]['text'])
 
     def test_sign_in_new_user(self, new_user, selenium, timeout):
-        from browserid.pages.sign_in import SignIn
+        from bidpom.pages.sign_in import SignIn
         signin = SignIn(selenium, timeout)
         signin.email = new_user['email']
         signin.click_next(expect='verify')
@@ -61,41 +61,41 @@ class TestSignIn(BaseTest):
         self.email_appears_valid(mail[0]['text'])
 
     def test_sign_in_is_this_your_computer_immediately(self, selenium, timeout, verified_user):
-        browser_id = BrowserID(selenium, timeout)
-        browser_id.sign_in(verified_user['email'], verified_user['password'])
+        bidpom = BIDPOM(selenium, timeout)
+        bidpom.sign_in(verified_user['email'], verified_user['password'])
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
         self.log_out(selenium, timeout)
 
         selenium.find_element(*self._persona_login_button_locator).click()
 
-        from browserid.pages.sign_in import SignIn
+        from bidpom.pages.sign_in import SignIn
         signin = SignIn(selenium, timeout)
         signin.click_sign_in_returning_user()
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_helper_with_returning_user(self, selenium, timeout, verified_user):
-        browser_id = BrowserID(selenium, timeout)
-        browser_id.sign_in(verified_user['email'], verified_user['password'])
+        bidpom = BIDPOM(selenium, timeout)
+        bidpom.sign_in(verified_user['email'], verified_user['password'])
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
         self.log_out(selenium, timeout)
 
         self._wait_to_delay_next_login(selenium)
         selenium.find_element(*self._persona_login_button_locator).click()
-        browser_id.sign_in()
+        bidpom.sign_in()
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
 
     def test_sign_in_helper_with_returning_user_immediately(self, selenium, timeout, verified_user):
-        browser_id = BrowserID(selenium, timeout)
-        browser_id.sign_in(verified_user['email'], verified_user['password'])
+        bidpom = BIDPOM(selenium, timeout)
+        bidpom.sign_in(verified_user['email'], verified_user['password'])
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
         self.log_out(selenium, timeout)
         selenium.find_element(*self._persona_login_button_locator).click()
-        browser_id.sign_in()
+        bidpom.sign_in()
         WebDriverWait(selenium, timeout).until(lambda s: s.find_element(
             *self._persona_logged_in_indicator_locator).is_displayed())
 

@@ -8,8 +8,8 @@ try:
 except (OSError, IOError):
     description = ''
 
-setup(name='browserid',
-      version='1.4',
+setup(name='bidpom',
+      version='2.0',
       description="Mozilla BrowserID (Persona) Page Object Model",
       long_description=description,
       classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -18,5 +18,5 @@ setup(name='browserid',
       author_email='mozwebqa@mozilla.org',
       url='https://github.com/mozilla/bidpom',
       license='MPL 2.0',
-      packages=['browserid', 'browserid.pages'],
+      packages=['bidpom', 'bidpom.pages'],
       include_package_data=True)

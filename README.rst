@@ -7,8 +7,8 @@ Selenium compatible page object model for
 .. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
    :target: https://github.com/mozilla/bidpom/blob/master/LICENSE
    :alt: License
-.. image:: https://img.shields.io/pypi/v/browserid.svg
-   :target: https://pypi.python.org/pypi/browserid/
+.. image:: https://img.shields.io/pypi/v/bidpom.svg
+   :target: https://pypi.python.org/pypi/bidpom/
    :alt: PyPI
 .. image:: https://img.shields.io/travis/mozilla/bidpom.svg
    :target: https://travis-ci.org/mozilla/bidpom/
