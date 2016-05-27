@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='bidpom',
-      version='2.0',
+      version='2.0.1',
       description='Mozilla BrowserID (Persona) Page Object Model',
       long_description=open('README.rst').read(),
       author='Mozilla Web QA',
