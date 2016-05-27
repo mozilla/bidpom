@@ -1,5 +1,8 @@
-*.pyc
+__pycache__
+.cache
 *.komodoproject
-build
-results
+*.pyc
 *egg*
+build
+dist
+results
