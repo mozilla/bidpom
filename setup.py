@@ -1,22 +1,29 @@
 from setuptools import setup
-import os
-
-# get documentation from the README
-try:
-    here = os.path.dirname(os.path.abspath(__file__))
-    description = file(os.path.join(here, 'README.md')).read()
-except (OSError, IOError):
-    description = ''
 
 setup(name='bidpom',
       version='2.0',
-      description="Mozilla BrowserID (Persona) Page Object Model",
-      long_description=description,
-      classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-      keywords='mozilla',
+      description='Mozilla BrowserID (Persona) Page Object Model',
+      long_description=open('README.rst').read(),
       author='Mozilla Web QA',
       author_email='mozwebqa@mozilla.org',
       url='https://github.com/mozilla/bidpom',
-      license='MPL 2.0',
       packages=['bidpom', 'bidpom.pages'],
-      include_package_data=True)
+      include_package_data=True,
+      license='Mozilla Public License 2.0 (MPL 2.0)',
+      keywords='mozilla browserid bidpom persona page object model selenium',
+      classifiers=[
+          'Development Status :: 5 - Production/Stable',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
+          'Operating System :: POSIX',
+          'Operating System :: Microsoft :: Windows',
+          'Operating System :: MacOS :: MacOS X',
+          'Topic :: Software Development :: Quality Assurance',
+          'Topic :: Software Development :: Testing',
+          'Topic :: Utilities',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2.6',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3.2',
+          'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4'])
