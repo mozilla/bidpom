@@ -7,8 +7,6 @@ import time
 from base import Base
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as expected
-from selenium.webdriver.support.ui import WebDriverWait
 
 
 class SignIn(Base):
@@ -39,12 +37,12 @@ class SignIn(Base):
     _this_is_not_my_computer_locator = (By.ID, 'this_is_not_my_computer')
 
     def __init__(self, selenium, timeout=10):
-        Base.__init__(self, selenium, timeout)
+        super(SignIn, self).__init__(selenium, timeout)
 
         if not self.selenium.title == self._page_title:
             for handle in self.selenium.window_handles:
                 self.selenium.switch_to_window(handle)
-                WebDriverWait(self.selenium, self.timeout).until(lambda s: s.title)
+                self.wait.until(lambda s: s.title)
                 if self.selenium.title == self._page_title:
                     self._sign_in_window_handle = handle
                     break
@@ -52,72 +50,70 @@ class SignIn(Base):
                 raise Exception('Popup has not loaded')
 
         # Replace expectations with two conditions
-        WebDriverWait(self.selenium, self.timeout).until(self._is_page_ready)
+        self.wait.until(self._is_page_ready)
 
     def _is_page_ready(self, s):
-        if s.find_element(*self._email_locator).is_displayed():
+        if self.is_element_displayed(*self._email_locator):
             return True
         else:
-            body = self.selenium.find_element(By.TAG_NAME, 'body')
-            sign_in = s.find_element(*self._sign_in_returning_user_locator)
+            body = self.find_element(By.TAG_NAME, 'body')
+            sign_in = self.find_element(*self._sign_in_returning_user_locator)
             return sign_in.is_displayed() and 'submit_disabled' not in body.get_attribute('class')
 
     @property
     def is_initial_sign_in(self):
         """Is this the first sign in for the user?"""
-        return self.selenium.find_element(*self._email_locator).is_displayed()
+        return self.find_element(*self._email_locator).is_displayed()
 
     @property
     def signed_in_email(self):
         """Get the value of the email that is currently signed in."""
-        return self.selenium.find_element(*self._signed_in_email_locator).get_attribute('value')
+        return self.find_element(*self._signed_in_email_locator).get_attribute('value')
 
     def click_this_is_not_me(self):
         """Clicks the 'This is not me' button."""
-        self.selenium.find_element(*self._this_is_not_me_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(*self._email_locator).is_displayed())
+        self.find_element(*self._this_is_not_me_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._email_locator))
 
     @property
     def emails(self):
         """Get the emails for the returning user."""
-        return [element.text for element in
-                self.selenium.find_elements(*self._emails_locator)]
+        return [el.text for el in self.find_elements(*self._emails_locator)]
 
     @property
     def email(self):
         """Get the value of the email field."""
-        return self.selenium.find_element(*self._email_locator).get_attribute('value')
+        return self.find_element(*self._email_locator).get_attribute('value')
 
     @email.setter
     def email(self, value):
         """Set the value of the email field."""
-        email = self.selenium.find_element(*self._email_locator)
+        email = self.find_element(*self._email_locator)
         email.clear()
         email.send_keys(value)
 
     @property
     def new_email(self):
         """Get the value of the new email field."""
-        return self.selenium.find_element(*self._new_email_locator).get_attribute('value')
+        return self.find_element(*self._new_email_locator).get_attribute('value')
 
     @new_email.setter
     def new_email(self, value):
         """Set the value of the new email field."""
-        email = self.selenium.find_element(*self._new_email_locator)
+        email = self.find_element(*self._new_email_locator)
         email.clear()
         email.send_keys(value)
 
     @property
     def selected_email(self):
         """Return the value of the selected email of returning user's multiple emails"""
-        for email in self.selenium.find_elements(*self._emails_locator):
+        for email in self.find_elements(*self._emails_locator):
             if email.find_element(By.TAG_NAME, 'input').is_selected():
                 return email.text
 
     def select_email(self, value):
         """Select email from the returning user's multiple emails."""
-        for email in self.selenium.find_elements(*self._emails_locator):
+        for email in self.find_elements(*self._emails_locator):
             if email.text == value:
                 email.click()
                 break
@@ -127,51 +123,51 @@ class SignIn(Base):
     @property
     def register_password(self):
         """Get the value of the register password field."""
-        return self.selenium.find_element(*self._register_password_locator).get_attribute('value')
+        return self.find_element(*self._register_password_locator).get_attribute('value')
 
     @register_password.setter
     def register_password(self, value):
         """Set the value of the register password field."""
-        password = self.selenium.find_element(*self._register_password_locator)
+        password = self.find_element(*self._register_password_locator)
         password.clear()
         password.send_keys(value)
 
     @property
     def login_password(self):
         """Get the value of the login password field."""
-        return self.selenium.find_element(*self._login_password_locator).get_attribute('value')
+        return self.find_element(*self._login_password_locator).get_attribute('value')
 
     @login_password.setter
     def login_password(self, value):
         """Set the value of the login password field."""
-        password = self.selenium.find_element(*self._login_password_locator)
+        password = self.find_element(*self._login_password_locator)
         password.clear()
         password.send_keys(value)
 
     @property
     def verify_password(self):
         """Get the value of the verify password field."""
-        return self.selenium.find_element(*self._verify_password_locator).get_attribute('value')
+        return self.find_element(*self._verify_password_locator).get_attribute('value')
 
     @verify_password.setter
     def verify_password(self, value):
         """Set the value of the verify password field."""
-        password = self.selenium.find_element(*self._verify_password_locator)
+        password = self.find_element(*self._verify_password_locator)
         password.clear()
         password.send_keys(value)
 
     @property
     def check_email_at_address(self):
         """Get the value of the email address for confirmation."""
-        return self.selenium.find_element(*self._check_email_at_locator).text
+        return self.find_element(*self._check_email_at_locator).text
 
     def click_next(self, expect='password'):
         """Clicks the 'next' button."""
 
-        if self.selenium.find_element(*self._desktop_next_locator).is_displayed():
-            self.selenium.find_element(*self._desktop_next_locator).click()
+        if self.is_element_displayed(*self._desktop_next_locator):
+            self.find_element(*self._desktop_next_locator).click()
         else:
-            self.selenium.find_element(*self._mobile_next_locator).click()
+            self.find_element(*self._mobile_next_locator).click()
 
         # FIXME: Unfortunately there's no good way to wait for the loading
         # spinner to settle. We can't wait for it to be hidden as it is
@@ -200,92 +196,69 @@ class SignIn(Base):
         # has highlighted an issue with our Persona automation.
         time.sleep(5)
 
-        loading = self.selenium.find_element(
-            *self._checking_email_provider_loading_locator)
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: not loading.is_displayed())
+        loading = self.find_element(*self._checking_email_provider_loading_locator)
+        self.wait.until(lambda s: not loading.is_displayed())
 
         if expect == 'password':
-            body = self.selenium.find_element(By.TAG_NAME, 'body')
-            WebDriverWait(self.selenium, self.timeout).until(
-                expected.visibility_of_element_located(self._login_password_locator))
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: 'returning' in body.get_attribute('class'))
+            body = self.find_element(By.TAG_NAME, 'body')
+            self.wait.until(lambda s: self.is_element_displayed(*self._login_password_locator))
+            self.wait.until(lambda s: 'returning' in body.get_attribute('class'))
         elif expect == 'verify':
-            WebDriverWait(self.selenium, self.timeout).until(
-                expected.visibility_of_element_located(self._verify_email_locator))
+            self.wait.until(lambda s: self.is_element_displayed(*self._verify_email_locator))
         else:
             raise Exception('Unknown expect value: %s' % expect)
 
     def click_sign_in(self):
         """Clicks the 'sign in' button."""
-        self.selenium.find_element(*self._sign_in_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._form_completing_loading_locator).is_displayed()
-        )
-
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: self._sign_in_window_handle not in self.selenium.window_handles
-        )
-
+        self.find_element(*self._sign_in_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._form_completing_loading_locator))
+        self.wait.until(lambda s: self._sign_in_window_handle not in self.selenium.window_handles)
         self.switch_to_main_window()
 
     def click_sign_in_returning_user(self, expect=None):
         """Clicks the 'sign in' button."""
-        self.selenium.find_element(
-            *self._sign_in_returning_user_locator).click()
+        self.find_element(*self._sign_in_returning_user_locator).click()
 
         time.sleep(5)
         if len(self.selenium.window_handles) == 1:
             self.switch_to_main_window()
         else:
-            WebDriverWait(self.selenium, self.timeout).until(
-                lambda s: s.find_element(
-                    *self._your_computer_content_locator).is_displayed())
+            self.wait.until(lambda s: self.is_element_displayed(
+                *self._your_computer_content_locator))
 
     def click_verify_email(self):
         """Clicks 'verify email' button."""
-        self.selenium.find_element(*self._verify_email_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._check_email_at_locator).is_displayed())
+        self.find_element(*self._verify_email_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._check_email_at_locator))
 
     def click_forgot_password(self):
         """Clicks 'forgot password' link (visible after entering a valid email)"""
-        self.selenium.find_element(*self._forgot_password_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(*self._confirm_message_locator).is_displayed())
+        self.find_element(*self._forgot_password_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._confirm_message_locator))
 
     def click_reset_password(self):
         """Clicks 'reset password' after forgot password and new passwords entered"""
-        self.selenium.find_element(*self._reset_password_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._check_email_at_locator).is_displayed())
+        self.find_element(*self._reset_password_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._check_email_at_locator))
 
     def click_add_another_email_address(self):
         """Clicks 'add another email' button."""
-        self.selenium.find_element(*self._add_another_email_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._add_new_email_locator).is_displayed())
+        self.find_element(*self._add_another_email_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._add_new_email_locator))
 
     def click_add_new_email(self):
         """Clicks 'Add' button to insert new email address."""
-        self.selenium.find_element(*self._add_new_email_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(
-                *self._check_email_at_locator).is_displayed())
+        self.find_element(*self._add_new_email_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._check_email_at_locator))
 
     def click_i_trust_this_computer(self):
         """Clicks 'I trust this computer' and signs in """
-        self.selenium.find_element(*self._this_is_my_computer_locator).click()
+        self.find_element(*self._this_is_my_computer_locator).click()
         self.switch_to_main_window()
 
     def click_this_is_not_my_computer(self):
         """Clicks 'I trust this computer' and signs in for a public computer"""
-        self.selenium.find_element(*self._this_is_not_my_computer_locator).click()
+        self.find_element(*self._this_is_not_my_computer_locator).click()
         self.switch_to_main_window()
 
     def sign_in(self, email, password):

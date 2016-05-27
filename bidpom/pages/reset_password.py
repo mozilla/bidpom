@@ -5,7 +5,6 @@
 from base import Base
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 
 
 class ResetPassword(Base):
@@ -16,42 +15,40 @@ class ResetPassword(Base):
     _thank_you_locator = (By.ID, 'congrats')
 
     def wait_for_page_to_load(self):
-        el = self.selenium.find_element(By.TAG_NAME, 'body')
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: 'needs_password' in el.get_attribute('class'))
+        el = self.find_element(By.TAG_NAME, 'body')
+        self.wait.until(lambda s: 'needs_password' in el.get_attribute('class'))
         return self
 
     @property
     def new_password(self):
         """Get the value of the new password field."""
-        return self.selenium.find_element(*self._create_new_password_locator).get_attribute('value')
+        return self.find_element(*self._create_new_password_locator).get_attribute('value')
 
     @new_password.setter
     def new_password(self, value):
         """Set the value of the new password field."""
-        password = self.selenium.find_element(*self._create_new_password_locator)
+        password = self.find_element(*self._create_new_password_locator)
         password.clear()
         password.send_keys(value)
 
     @property
     def verify_password(self):
         """Get the value of the verify password field."""
-        return self.selenium.find_element(*self._verify_password_locator).get_attribute('value')
+        return self.find_element(*self._verify_password_locator).get_attribute('value')
 
     @verify_password.setter
     def verify_password(self, value):
         """Set the value of the verify password field."""
-        password = self.selenium.find_element(*self._verify_password_locator)
+        password = self.find_element(*self._verify_password_locator)
         password.clear()
         password.send_keys(value)
 
     def click_finish(self):
         """Click finish"""
-        self.selenium.find_element(*self._finish_button_locator).click()
-        WebDriverWait(self.selenium, self.timeout).until(
-            lambda s: s.find_element(*self._thank_you_locator).is_displayed())
+        self.find_element(*self._finish_button_locator).click()
+        self.wait.until(lambda s: self.is_element_displayed(*self._thank_you_locator))
 
     @property
     def thank_you(self):
         """Returns the 'thank you' message."""
-        return self.selenium.find_element(*self._thank_you_locator).text
+        return self.find_element(*self._thank_you_locator).text
