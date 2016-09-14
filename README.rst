@@ -20,6 +20,12 @@ Selenium compatible page object model for
    :target: https://requires.io/github/mozilla/bidpom/requirements/?branch=master
    :alt: Requirements
 
+Running the Tests
+-----------------
+
+* `Install Tox <https://tox.readthedocs.io/en/latest/install.html>`_
+* Run ``tox``
+
 Resources
 ---------
 
