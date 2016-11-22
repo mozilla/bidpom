@@ -9,7 +9,7 @@ setup(name='bidpom',
       url='https://github.com/mozilla/bidpom',
       packages=['bidpom', 'bidpom.pages'],
       include_package_data=True,
-      install_requires=['PyPOM==1.0.0'],
+      install_requires=['PyPOM==1.1.1'],
       license='Mozilla Public License 2.0 (MPL 2.0)',
       keywords='mozilla browserid bidpom persona page object model selenium',
       classifiers=[
