@@ -13,7 +13,7 @@ setup(name='bidpom',
       license='Mozilla Public License 2.0 (MPL 2.0)',
       keywords='mozilla browserid bidpom persona page object model selenium',
       classifiers=[
-          'Development Status :: 5 - Production/Stable',
+          'Development Status :: 7 - Inactive',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)',
           'Operating System :: POSIX',

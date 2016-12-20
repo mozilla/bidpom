@@ -1,8 +1,13 @@
 BrowserID Page Object Model
 ===========================
 
-Selenium compatible page object model for
-`Mozilla Persona <https://login.persona.org/>`_ (previously known as BrowserID).
+This repository is no longer actively maintained
+------------------------------------------------
+
+Due to the shutdown of the Mozilla Persona service, this supporting project is no longer being used nor actively maintained.
+
+Selenium-compatible page-object model for
+`Mozilla Persona <https://persona.org/>`_ (previously known as BrowserID).
 
 .. image:: https://img.shields.io/badge/license-MPL%202.0-blue.svg
    :target: https://github.com/mozilla/bidpom/blob/master/LICENSE
@@ -30,5 +35,4 @@ Resources
 ---------
 
 - `Documentation <https://github.com/mozilla/bidpom/wiki>`_
-- `Issue Tracker <https://github.com/mozilla/bidpom/issues>`_
 - `Code <http://github.com/mozilla/bidpom/>`_
