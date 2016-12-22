@@ -1,11 +1,6 @@
 BrowserID Page Object Model
 ===========================
 
-This repository is no longer actively maintained
-------------------------------------------------
-
-Due to the shutdown of the Mozilla Persona service, this supporting project is no longer being used nor actively maintained.
-
 Selenium-compatible page-object model for
 `Mozilla Persona <https://persona.org/>`_ (previously known as BrowserID).
 
@@ -15,15 +10,18 @@ Selenium-compatible page-object model for
 .. image:: https://img.shields.io/pypi/v/bidpom.svg
    :target: https://pypi.python.org/pypi/bidpom/
    :alt: PyPI
-.. image:: https://img.shields.io/travis/mozilla/bidpom.svg
-   :target: https://travis-ci.org/mozilla/bidpom/
-   :alt: Travis
 .. image:: https://img.shields.io/github/issues-raw/mozilla/bidpom.svg
    :target: https://github.com/mozilla/bidpom/issues
    :alt: Issues
 .. image:: https://img.shields.io/requires/github/mozilla/bidpom.svg
    :target: https://requires.io/github/mozilla/bidpom/requirements/?branch=master
    :alt: Requirements
+
+This project is no longer actively maintained
+---------------------------------------------
+
+Due to the shutdown of the `Mozilla Persona <https://persona.org/>`_ service,
+this supporting project is no longer being used nor actively maintained.
 
 Running the Tests
 -----------------
