@@ -10,9 +10,6 @@ Selenium-compatible page-object model for
 .. image:: https://img.shields.io/pypi/v/bidpom.svg
    :target: https://pypi.python.org/pypi/bidpom/
    :alt: PyPI
-.. image:: https://img.shields.io/requires/github/mozilla/bidpom.svg
-   :target: https://requires.io/github/mozilla/bidpom/requirements/?branch=master
-   :alt: Requirements
 
 This project is no longer actively maintained
 ---------------------------------------------
